@@ -20,9 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.nistruct.meditation.DesignContent.DailyCalm
-import com.nistruct.meditation.R
-import com.nistruct.meditation.ui.theme.*
 import com.nistruct.meditation.view.Header
+import com.nistruct.meditation.R
+import com.nistruct.meditation.data.entity.SleepMode
+import com.nistruct.meditation.ui.theme.*
 
 @Composable
 fun HomePage(navController: NavHostController) {
@@ -120,10 +121,8 @@ fun CardMode() {
                     fontSize = 18.sp,
                     color = Yellow,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp),
-                    fontWeight = FontWeight.Bold
-                )
+                        .fillMaxWidth().padding(15.dp),
+                    fontWeight = FontWeight.Bold)
                 Text(
                     text = "Course",
                     textAlign = TextAlign.Start,
@@ -185,10 +184,8 @@ fun CardMode() {
                     fontSize = 18.sp,
                     color = Yellow,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp),
-                    fontWeight = FontWeight.Bold
-                )
+                        .fillMaxWidth().padding(15.dp),
+                    fontWeight = FontWeight.Bold)
                 Text(
                     text = "Music",
                     textAlign = TextAlign.Start,
