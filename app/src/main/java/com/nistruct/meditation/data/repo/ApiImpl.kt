@@ -49,4 +49,12 @@ class ApiImpl
             topicListResponse.body()
         } else throw HttpException(topicListResponse)
     }
+
+    override suspend fun getMeditationList(authHeader: String): MeditationListModel? {
+        val meditationListResponse = meditationAPI.getMeditationList("Bearer " + authHeader)
+        Timber.tag("API_TEST_GET_LIST_OF_MEDITATIONS").i(meditationListResponse.code().toString())
+        return if (meditationListResponse.isSuccessful) {
+            meditationListResponse.body()
+        } else throw HttpException(meditationListResponse)
+    }
 }

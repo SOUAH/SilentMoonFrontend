@@ -30,4 +30,9 @@ interface MeditationAPI {
         @Header("Authorization") authHeader: String
     ): Response<TopicListModel>
 
+    @GET("/v1/meditation")
+    suspend fun getMeditationList(
+        @Header("Authorization") authHeader: String
+    ): Response<MeditationListModel>
+
 }

@@ -14,4 +14,6 @@ interface ApiInteractor {
 
     suspend fun getTopicList(authHeader: String): TopicListModel?
 
+    suspend fun getMeditationList(authHeader: String): MeditationListModel?
+
 }

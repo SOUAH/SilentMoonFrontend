@@ -35,10 +35,6 @@ fun ChooseTopic(navController: NavHostController) {
 
     var topics = viewModel.topics.observeAsState()
 
-//    viewModel.getTopics()
-
-//    var topicsList = topics.value!!.toList()
-
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.choose_topic),
@@ -100,14 +96,14 @@ fun TopicsItem(topic: TopicModel, navController: NavHostController) {
             .fillMaxWidth()
             .height(200.dp)
     ) {
-        val painter = rememberImagePainter(topic.topicImageUrl)
+        val painter = rememberImagePainter(topic.imageUrl)
         Image(
             painter = painter,
             contentDescription = "",
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    navController.navigate("Reminders/${topic.topicName}")
+                    navController.navigate("Reminders/${topic.name}")
                 },
             contentScale = ContentScale.FillBounds,
         )

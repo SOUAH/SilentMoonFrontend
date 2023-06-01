@@ -1,6 +1,5 @@
 package com.nistruct.meditation.view.meditations
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,14 +37,15 @@ import com.nistruct.meditation.data.entity.TitleAndIconModel
 import com.nistruct.meditation.ui.theme.*
 import com.nistruct.meditation.view.BottomMenu
 import com.nistruct.meditation.view.Header
-import com.nistruct.meditation.viewmodel.UserViewModel
+import com.nistruct.meditation.viewmodel.MeditationViewModel
 
 
 @Composable
 fun MeditateV2(navController: NavHostController) {
-    var viewModel: UserViewModel = hiltViewModel()
+    var viewModel: MeditationViewModel = hiltViewModel()
 //    var nickNameDS = viewModel.getNickName()
     var selectedItemIndex = remember { mutableStateOf(0) }
+    var meditations = viewModel
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -66,44 +66,31 @@ fun MeditateV2(navController: NavHostController) {
                     mainAxisSize = SizeMode.Expand,
                     mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
                 ) {
-                    SeasonsSection(
-                        item = listOf(
-                            TitleAndIconModel("Summer", R.drawable.summer),
-                            TitleAndIconModel("Spring", R.drawable.spring),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Winter", R.drawable.winter_trees),
-                            TitleAndIconModel("Autumn", R.drawable.autumn)
-                        )
-                    )
+//                    meditations.val?.let { meditationList ->
+//                        MenuItem(
+//                            meditations = meditationList, navController
+//                        )
                 }
-
-
             }
         }
-
-        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
-            BottomMenu(
-                selectedItemIndex,
-
-                items = listOf(
-                    TitleAndIconModel("Sleep", R.drawable.sleep),
-                    TitleAndIconModel("Meditate", R.drawable.medidate),
-//                    TitleAndIconModel("$nickNameDS", R.drawable.user)
-                ),
-
-                )
-        }
-
-
     }
+
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+        BottomMenu(
+            selectedItemIndex,
+
+            items = listOf(
+//                    TitleAndIconModel("Sleep", R.drawable.sleep),
+                TitleAndIconModel("Meditate", R.drawable.medidate),
+//                    TitleAndIconModel("$nickNameDS", R.drawable.user)
+            ),
+
+            )
+    }
+
+
 }
+
 
 @Composable
 fun MeditateBody(navController: NavHostController) {
@@ -118,13 +105,13 @@ fun MeditateBody(navController: NavHostController) {
     MenuArray(
         itemsTopics = listOf(
             TitleAndIconModel("All", R.drawable.all),
-            TitleAndIconModel("Sleep", R.drawable.sleep),
+//            TitleAndIconModel("Sleep", R.drawable.sleep),
             TitleAndIconModel("My", R.drawable.my),
             TitleAndIconModel("Kids", R.drawable.kids),
             TitleAndIconModel("Anxious", R.drawable.anxious),
             TitleAndIconModel("My", R.drawable.my),
             TitleAndIconModel("Anxious", R.drawable.anxious),
-            TitleAndIconModel("Sleep", R.drawable.sleep),
+//            TitleAndIconModel("Sleep", R.drawable.sleep),
             TitleAndIconModel("Kids", R.drawable.kids),
         )
     )

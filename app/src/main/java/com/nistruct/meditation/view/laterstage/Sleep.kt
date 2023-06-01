@@ -35,11 +35,11 @@ fun Sleep(navController: NavHostController) {
     ) {
 
         Box() {
-            Image(
-                painter = painterResource(id = R.drawable.sleep1), contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )
+//            Image(
+//                painter = painterResource(id = R.drawable.sleep1), contentDescription = null,
+//                modifier = Modifier.fillMaxWidth(),
+//                contentScale = ContentScale.Crop
+//            )
             Image(
                 painter = painterResource(id = R.drawable.moons),
                 contentDescription = null,
@@ -73,13 +73,13 @@ fun Sleep(navController: NavHostController) {
                 MenuArray(
                     itemsTopics = listOf(
                         TitleAndIconModel("All", R.drawable.all),
-                        TitleAndIconModel("Sleep", R.drawable.sleep),
+//                        TitleAndIconModel("Sleep", R.drawable.sleep),
                         TitleAndIconModel("My", R.drawable.my),
                         TitleAndIconModel("Kids", R.drawable.kids),
                         TitleAndIconModel("Anxious", R.drawable.anxious),
                         TitleAndIconModel("My", R.drawable.my),
                         TitleAndIconModel("Anxious", R.drawable.anxious),
-                        TitleAndIconModel("Sleep", R.drawable.sleep),
+//                        TitleAndIconModel("Sleep", R.drawable.sleep),
                         TitleAndIconModel("Kids", R.drawable.kids),
                     )
                 )

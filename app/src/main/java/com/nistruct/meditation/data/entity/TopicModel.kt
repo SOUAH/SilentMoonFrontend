@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 
 data class TopicModel(
     @SerialName("topicName")
-    val topicName: String,
+    val name: String,
     @SerialName("topicShortName")
-    val topicShortName: String,
+    val shortName: String,
     @SerialName("topicImageUrl")
-    val topicImageUrl: String
+    val imageUrl: String
 )

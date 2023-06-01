@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,20 +28,24 @@ fun MainViewLaterStage(navController: NavHostController) {
     var selectedItemIndex = remember { mutableStateOf(0) }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(bottom = 90.dp)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(bottom = 90.dp)
+        ) {
         }
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
-            BottomMenu(selectedItemIndex,
+            BottomMenu(
+                selectedItemIndex,
 
-                    items = listOf(
+                items = listOf(
                     TitleAndIconModel("Home", R.drawable.home),
-                    TitleAndIconModel("Sleep", R.drawable.sleep),
+//                    TitleAndIconModel("Sleep", R.drawable.sleep),
                     TitleAndIconModel("Meditate", R.drawable.medidate),
                     TitleAndIconModel("Music", R.drawable.music),
                     TitleAndIconModel("Profile", R.drawable.user)
                 ),
 
-            )
+                )
         }
     }
 }
@@ -49,7 +56,7 @@ fun BottomMenu(
     items: List<TitleAndIconModel>,
     activeHighlightColor: Color = Purple,
     activeTextColor: Color = Color.White,
-    inactiveTextColor: Color =  Gray,
+    inactiveTextColor: Color = Gray,
 //    initialSelectedItemIndex: Int = 0
 
 ) {
