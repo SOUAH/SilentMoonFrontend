@@ -16,4 +16,6 @@ interface ApiInteractor {
 
     suspend fun getMeditationList(authHeader: String): MeditationListModel?
 
+    suspend fun updateUser(request: SetUserPreferencesRequestModel): UserResponse?
+
 }

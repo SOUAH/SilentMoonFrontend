@@ -154,9 +154,6 @@ fun MeditateBody(navController: NavHostController) {
             TitleAndIconModel("My", R.drawable.my),
             TitleAndIconModel("Kids", R.drawable.kids),
             TitleAndIconModel("Anxious", R.drawable.anxious),
-            TitleAndIconModel("My", R.drawable.my),
-            TitleAndIconModel("Anxious", R.drawable.anxious),
-            TitleAndIconModel("Kids", R.drawable.kids),
         )
     )
 

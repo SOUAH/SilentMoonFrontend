@@ -8,6 +8,7 @@ import com.nistruct.meditation.data.AppDataStore.DataStoreInterface
 import com.nistruct.meditation.data.entity.ForgotPasswordRequest
 import com.nistruct.meditation.data.entity.LoginRequestModel
 import com.nistruct.meditation.data.entity.RegisterRequestModel
+import com.nistruct.meditation.data.entity.SetUserPreferencesRequestModel
 import timber.log.Timber
 import java.time.LocalTime
 import javax.inject.Inject
@@ -135,6 +136,24 @@ class UserRepository @Inject constructor(
         try {
             apiInteractor.forgotPassword(forgotPasswordRequest)//sending request to BE
         } catch (t: Throwable) {
+            Timber.i("TAG: ${t.message}")
+        }
+    }
+
+    suspend fun updateUser(
+        favoriteTopic: String,
+        notificationDays: Array<String>,
+        notificationTime: String
+    ) {
+        val updatingRequest = SetUserPreferencesRequestModel(
+            favoriteTopic = favoriteTopic,
+            notificationDays = notificationDays,
+            notificationTime = notificationTime,
+        )
+        try {
+            apiInteractor.updateUser(updatingRequest)
+        } catch (t: Throwable) {
+
             Timber.i("TAG: ${t.message}")
         }
     }

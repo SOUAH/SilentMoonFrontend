@@ -52,4 +52,14 @@ class UserViewModel @Inject constructor(
             userRepository.forgotPassword(email)
         }
     }
+
+    fun updatUser(
+        favoriteTopic: String,
+        notificationDays: Array<String>,
+        notificationTime: String
+    ) {
+        viewModelScope.launch {
+            userRepository.updateUser(favoriteTopic, notificationDays, notificationTime)
+        }
+    }
 }

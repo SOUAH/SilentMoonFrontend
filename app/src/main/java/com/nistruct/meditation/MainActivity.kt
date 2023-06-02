@@ -20,8 +20,6 @@ import androidx.navigation.navArgument
 import com.nistruct.meditation.ui.theme.MeditationAppTheme
 import com.nistruct.meditation.view.*
 import com.nistruct.meditation.view.laterstage.HomePage
-import com.nistruct.meditation.view.laterstage.Music
-import com.nistruct.meditation.view.laterstage.Sleep
 import com.nistruct.meditation.view.laterstage.WelcomeSleep
 import com.nistruct.meditation.view.meditations.CourseDetails
 import com.nistruct.meditation.view.meditations.MeditateV2
@@ -120,12 +118,9 @@ fun PageTransmitions(
         composable("WelcomeSleep") {
             WelcomeSleep(navController = navController)
         }
-        composable("Sleep") {
-            Sleep(navController = navController)
-        }
-        composable("Music") {
-            Music(navController = navController)
-        }
+//        composable("Music") {
+//            Music(navController = navController)
+//        }
 
 
     }

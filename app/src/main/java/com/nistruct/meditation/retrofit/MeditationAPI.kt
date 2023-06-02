@@ -2,10 +2,7 @@ package com.nistruct.meditation.retrofit
 
 import com.nistruct.meditation.data.entity.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface MeditationAPI {
 
@@ -35,4 +32,8 @@ interface MeditationAPI {
         @Header("Authorization") authHeader: String
     ): Response<MeditationListModel>
 
+    @PUT("/v1/user/user")
+    suspend fun updateUser(
+        @Body body: SetUserPreferencesRequestModel
+    ): Response<UserResponse>
 }
