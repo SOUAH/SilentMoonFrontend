@@ -32,8 +32,10 @@ interface MeditationAPI {
         @Header("Authorization") authHeader: String
     ): Response<MeditationListModel>
 
-    @PUT("/v1/user/user")
+    @PUT("/v1/user/{id}")
     suspend fun updateUser(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: String,
         @Body body: SetUserPreferencesRequestModel
     ): Response<UserResponse>
 }

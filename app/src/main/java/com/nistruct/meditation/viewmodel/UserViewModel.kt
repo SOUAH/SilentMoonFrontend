@@ -7,6 +7,7 @@ import com.nistruct.meditation.data.AppDataStore.DataStoreInterface
 import com.nistruct.meditation.data.repo.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalTime
 import javax.inject.Inject
 
 // provide the necessary data and functionality for the UI components to interact with
@@ -21,7 +22,7 @@ class UserViewModel @Inject constructor(
     var accessToken = MutableLiveData<String>()
 
     var favTopic = MutableLiveData<String>()
-    var notificationTime = MutableLiveData<String>()
+    var notificationTime = MutableLiveData<LocalTime>()
     var notificationDays = MutableLiveData<Array<String>>()
 
     init {
@@ -29,9 +30,9 @@ class UserViewModel @Inject constructor(
         username = userRepository.returnUsername()
         accessToken = userRepository.returnToken()
 
-        var favTopic = userRepository.returnFavTopic()
-        var notificationTime = userRepository.returnNotificationTime()
-        var notificationDays = userRepository.returnNotificationDays()
+        favTopic = userRepository.returnFavTopic()
+        notificationTime = userRepository.returnNotificationTime()
+        notificationDays = userRepository.returnNotificationDays()
     }
 
 
@@ -56,7 +57,7 @@ class UserViewModel @Inject constructor(
     fun updatUser(
         favoriteTopic: String,
         notificationDays: Array<String>,
-        notificationTime: String
+        notificationTime: LocalTime
     ) {
         viewModelScope.launch {
             userRepository.updateUser(favoriteTopic, notificationDays, notificationTime)

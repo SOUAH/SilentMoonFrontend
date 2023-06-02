@@ -33,8 +33,6 @@ fun WelcomeScreen(navController: NavHostController, getNickname: String) {
     var viewModel = hiltViewModel<UserViewModel>()
 
     var favTopic = viewModel.favTopic.observeAsState()
-    var notificationTime = viewModel.notificationTime.observeAsState()
-    var notificationDays = viewModel.notificationDays.observeAsState()
 
     Box(
         modifier = Modifier
@@ -65,7 +63,7 @@ fun WelcomeScreen(navController: NavHostController, getNickname: String) {
                 text_title = "GET STARTED"
             ) {
 
-                if (favTopic.value.toString() !== "" && !notificationTime.value.isNullOrEmpty() && !notificationTime.value.isNullOrEmpty()) {
+                if (!favTopic.value.isNullOrEmpty()) {
                     navController.navigate("Meditate")
                 }
                 else{

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,16 +18,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.nistruct.meditation.DesignContent.ButtonDesign
 import com.nistruct.meditation.spinnerTimePickerTools.WheelTimePicker
 import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.viewmodel.UserViewModel
 import java.time.LocalTime
+
+data class Day(val name: String, val shortName: String, val clicked: MutableState<Boolean>, val color: MutableState<Color>)
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Reminders(navController: NavHostController, chosenTopic: String) {
+
     val mondayClicked = remember { mutableStateOf(false) }
     val tuesdayClicked = remember { mutableStateOf(false) }
     val wednesdayClicked = remember { mutableStateOf(false) }
@@ -43,7 +49,25 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
     val saturdayText = remember { mutableStateOf(Black) }
     val sundayText = remember { mutableStateOf(Black) }
 
+    val daysOfWeek = remember {
+        listOf(
+            Day("Sunday", "SU", mondayClicked, mondayText),
+            Day("Monday", "M", tuesdayClicked, tuesdayText),
+            Day("Tuesday", "T", wednesdayClicked, wednesdayText),
+            Day("Wednesday", "W", thursdayClicked, thursdayText),
+            Day("Thursday", "TH", fridayClicked, fridayText),
+            Day("Friday", "F", saturdayClicked, saturdayText),
+            Day("Saturday", "S", sundayClicked, sundayText)
+        )
+    }
+
     val wheelPickerValue = remember { mutableStateOf(LocalTime.now()) }
+
+    var buttonClicked = remember { mutableStateOf(false) }
+
+    var viewModel: UserViewModel = hiltViewModel()
+
+    var favTopic = viewModel.favTopic.observeAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -60,13 +84,10 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
             )
             Text(
                 text = "Any time you can choose but We recommend first thing in the morning.",
-                //    style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Start,
                 color = Gray,
                 modifier = Modifier.padding(start = 20.dp, end = 40.dp)
             )
-
-
 
             Card(
                 modifier = Modifier
@@ -86,7 +107,6 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                         WheelTimePicker { snappedTime ->
                             wheelPickerValue.value = snappedTime
                         }
-
                     }
                 }
             }
@@ -100,7 +120,6 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
             )
             Text(
                 text = "Every day is best, but we recommend picking at least five.",
-                // style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Start,
                 color = Gray,
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 40.dp)
@@ -112,241 +131,18 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                     .padding(vertical = 10.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Card(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(all = 10.dp),
-                    shape = CircleShape,
-                    elevation = 7.dp,
-                    border = BorderStroke(1.dp, Gray_level1),
-
-                    ) {
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-
-                                if (sundayClicked.value) {
-                                    sundayText.value = Black
-                                    sundayClicked.value = false
-                                } else {
-                                    sundayText.value = White
-                                    sundayClicked.value = true
-                                }
-
-                            }
-                            .background(
-                                if (sundayClicked.value) Black
-                                else White
-                            )
-                    ) {
-                        Text(text = "SU", textAlign = TextAlign.Center, color = sundayText.value)
-                    }
-
+                daysOfWeek.forEach { day ->
+                    DayCard(day)
                 }
-
-                Card(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(all = 10.dp),
-                    shape = CircleShape,
-                    elevation = 7.dp,
-                    border = BorderStroke(1.dp, Gray_level1),
-
-                    ) {
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-
-                                if (mondayClicked.value) {
-                                    mondayText.value = Black
-                                    mondayClicked.value = false
-                                } else {
-                                    mondayText.value = White
-                                    mondayClicked.value = true
-                                }
-
-                            }
-                            .background(
-                                if (mondayClicked.value) Black
-                                else White
-                            )
-                    ) {
-                        Text(text = "M", textAlign = TextAlign.Center, color = mondayText.value)
-                    }
-
-                }
-
-                Card(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(all = 10.dp),
-                    shape = CircleShape,
-                    elevation = 7.dp,
-                    border = BorderStroke(1.dp, Gray_level1),
-
-                    ) {
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-
-                                if (tuesdayClicked.value) {
-                                    tuesdayText.value = Black
-                                    tuesdayClicked.value = false
-                                } else {
-                                    tuesdayText.value = White
-                                    tuesdayClicked.value = true
-                                }
-
-                            }
-                            .background(
-                                if (tuesdayClicked.value) Black
-                                else White
-                            )
-                    ) {
-                        Text(text = "T", textAlign = TextAlign.Center, color = tuesdayText.value)
-                    }
-
-                }
-
-
-                Card(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(all = 10.dp),
-                    shape = CircleShape,
-                    elevation = 7.dp,
-                    border = BorderStroke(1.dp, Gray_level1),
-
-                    ) {
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-
-                                if (wednesdayClicked.value) {
-                                    wednesdayText.value = Black
-                                    wednesdayClicked.value = false
-                                } else {
-                                    wednesdayText.value = White
-                                    wednesdayClicked.value = true
-                                }
-
-                            }
-                            .background(
-                                if (wednesdayClicked.value) Black
-                                else White
-                            )
-                    ) {
-                        Text(text = "W", textAlign = TextAlign.Center, color = wednesdayText.value)
-                    }
-
-                }
-
-                Card(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(all = 10.dp),
-                    shape = CircleShape,
-                    elevation = 7.dp,
-                    border = BorderStroke(1.dp, Gray_level1),
-
-                    ) {
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-
-                                if (thursdayClicked.value) {
-                                    thursdayText.value = Black
-                                    thursdayClicked.value = false
-                                } else {
-                                    thursdayText.value = White
-                                    thursdayClicked.value = true
-                                }
-                            }
-                            .background(
-                                if (thursdayClicked.value) Black
-                                else White
-                            )
-                    ) {
-                        Text(text = "TH", textAlign = TextAlign.Center, color = thursdayText.value)
-                    }
-                }
-
-                Card(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(all = 10.dp),
-                    shape = CircleShape,
-                    elevation = 7.dp,
-                    border = BorderStroke(1.dp, Gray_level1),
-
-                    ) {
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-
-                                if (fridayClicked.value) {
-                                    fridayText.value = Black
-                                    fridayClicked.value = false
-                                } else {
-                                    fridayText.value = White
-                                    fridayClicked.value = true
-                                }
-
-                            }
-                            .background(
-                                if (fridayClicked.value) Black
-                                else White
-                            )
-                    ) {
-                        Text(text = "F", textAlign = TextAlign.Center, color = fridayText.value)
-                    }
-
-                }
-                Card(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(all = 10.dp),
-                    shape = CircleShape,
-                    elevation = 7.dp,
-                    border = BorderStroke(1.dp, Gray_level1),
-
-                    ) {
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-
-                                if (saturdayClicked.value) {
-                                    saturdayText.value = Black
-                                    saturdayClicked.value = false
-                                } else {
-                                    saturdayText.value = White
-                                    saturdayClicked.value = true
-                                }
-
-                            }
-                            .background(
-                                if (saturdayClicked.value) Black
-                                else White
-                            )
-                    ) {
-                        Text(text = "S", textAlign = TextAlign.Center, color = saturdayText.value)
-                    }
-
-                }
-
             }
 
-
             ButtonDesign(text_color = White, bg_color = Purple, text_title = "SAVE") {
-                
-                navController.navigate("Meditate")
+                viewModel.updatUser(
+                    chosenTopic,
+                    daysOfWeek.filter { it.clicked.value }.map { it.name }.toTypedArray(),
+                    wheelPickerValue.value
+                )
+                buttonClicked.value = !buttonClicked.value
             }
 
             Text(
@@ -360,12 +156,53 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                         navController.navigate("LaunchScreen")
                     }
             )
-
-
         }
     }
+    if (buttonClicked.value) {
 
+        if (favTopic.value.toString() == chosenTopic
+        ) {
+            navController.navigate("Meditate")
+            buttonClicked.value = !buttonClicked.value
+        } else {
+        }
+
+    }
 }
+
+@Composable
+fun DayCard(day: Day) {
+    Card(
+        modifier = Modifier
+            .size(55.dp)
+            .padding(all = 10.dp),
+        shape = CircleShape,
+        elevation = 7.dp,
+        border = BorderStroke(1.dp, Gray_level1)
+    ) {
+        Row(horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .clickable {
+                    if (day.clicked.value) {
+                        day.color.value = Black
+                        day.clicked.value = false
+                    } else {
+                        day.color.value = White
+                        day.clicked.value = true
+                    }
+                }
+                .background(
+                    if (day.clicked.value) Black
+                    else White
+                )
+        ) {
+            Text(text = day.shortName, textAlign = TextAlign.Center, color = day.color.value)
+        }
+    }
+}
+
+
 
 
 

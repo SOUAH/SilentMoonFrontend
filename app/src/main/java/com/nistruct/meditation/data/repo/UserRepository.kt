@@ -33,9 +33,9 @@ class UserRepository @Inject constructor(
         userName = MutableLiveData<String>("")
         accessToken = MutableLiveData<String>("")
 
-        var favTopic = MutableLiveData<String>("")
-        var notificationTime = MutableLiveData<LocalTime>(null)
-        var notificationDays = MutableLiveData<Array<String>>( null)
+        favTopic = MutableLiveData<String>("")
+        notificationTime = MutableLiveData<LocalTime>(null)
+        notificationDays = MutableLiveData<Array<String>>( null)
     }
 
     fun returnEmail(): MutableLiveData<String> {
@@ -143,18 +143,29 @@ class UserRepository @Inject constructor(
     suspend fun updateUser(
         favoriteTopic: String,
         notificationDays: Array<String>,
-        notificationTime: String
+        notificationTime: LocalTime
     ) {
-        val updatingRequest = SetUserPreferencesRequestModel(
-            favoriteTopic = favoriteTopic,
-            notificationDays = notificationDays,
-            notificationTime = notificationTime,
-        )
-        try {
-            apiInteractor.updateUser(updatingRequest)
-        } catch (t: Throwable) {
+        if (accessToken.value.toString() != "" && !dataStore.getUserId().isNullOrEmpty()) {
+            val updatingRequest = SetUserPreferencesRequestModel(
+                favoriteTopic = favoriteTopic,
+                notificationDays = notificationDays,
+                notificationTime = notificationTime.toString(),
+            )
+            try {
+                val updatedUser = apiInteractor.updateUser(accessToken.value.toString(),dataStore.getUserId().toString(), updatingRequest)
 
-            Timber.i("TAG: ${t.message}")
+                var notificationTime = LocalTime.now().plusMinutes(5);
+                if (!updatedUser?.notificationTime.isNullOrEmpty()){
+                    notificationTime = LocalTime.parse(updatedUser?.notificationTime)
+                }
+
+                this.favTopic.value = updatedUser?.favoriteTopic
+                this.notificationTime.value = notificationTime
+                this.notificationDays.value = updatedUser?.notificationDays
+            } catch (t: Throwable) {
+
+                Timber.i("TAG: ${t.message}")
+            }
         }
     }
 }
