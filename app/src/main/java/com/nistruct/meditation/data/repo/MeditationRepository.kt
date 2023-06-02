@@ -16,6 +16,10 @@ class MeditationRepository @Inject constructor(
 
     var meditationList = MutableLiveData<Array<MeditationModel>>()
 
+    init {
+        meditationList = MutableLiveData(null)
+    }
+
     fun returnMeditationList(): MutableLiveData<Array<MeditationModel>> {
         return meditationList
     }

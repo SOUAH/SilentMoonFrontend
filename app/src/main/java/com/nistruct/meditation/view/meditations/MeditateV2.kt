@@ -1,20 +1,23 @@
 package com.nistruct.meditation.view.meditations
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -26,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
@@ -33,6 +37,7 @@ import com.nistruct.meditation.DesignContent.BigTitleDesign
 import com.nistruct.meditation.DesignContent.DailyCalm
 import com.nistruct.meditation.DesignContent.TitleDetail
 import com.nistruct.meditation.R
+import com.nistruct.meditation.data.entity.MeditationModel
 import com.nistruct.meditation.data.entity.TitleAndIconModel
 import com.nistruct.meditation.ui.theme.*
 import com.nistruct.meditation.view.BottomMenu
@@ -45,11 +50,10 @@ fun MeditateV2(navController: NavHostController) {
     var viewModel: MeditationViewModel = hiltViewModel()
 //    var nickNameDS = viewModel.getNickName()
     var selectedItemIndex = remember { mutableStateOf(0) }
-    var meditations = viewModel
+    var meditations = viewModel.meditations.observeAsState()
 
 
     Box(modifier = Modifier.fillMaxSize()) {
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -60,16 +64,18 @@ fun MeditateV2(navController: NavHostController) {
                 MeditateBody(navController)
             }
             item {
-
                 val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2)
                 FlowRow(
                     mainAxisSize = SizeMode.Expand,
                     mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
                 ) {
-//                    meditations.val?.let { meditationList ->
-//                        MenuItem(
-//                            meditations = meditationList, navController
-//                        )
+                }
+            }
+            item {
+                meditations.value?.let { meditationList ->
+                    Meditations(
+                        meditations = meditationList, navController
+                    )
                 }
             }
         }
@@ -78,19 +84,57 @@ fun MeditateV2(navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         BottomMenu(
             selectedItemIndex,
-
             items = listOf(
-//                    TitleAndIconModel("Sleep", R.drawable.sleep),
                 TitleAndIconModel("Meditate", R.drawable.medidate),
-//                    TitleAndIconModel("$nickNameDS", R.drawable.user)
             ),
-
-            )
+        )
     }
-
-
 }
 
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun Meditations(meditations: Array<MeditationModel>, navController: NavHostController) {
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+
+
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2), modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(meditations.size) { item ->
+                MeditationItem(meditation = meditations[item], navController)
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun MeditationItem(meditation: MeditationModel, navController: NavHostController) {
+
+    Box(
+        modifier = Modifier
+            .padding(7.5.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .fillMaxWidth()
+            .height(200.dp)
+    ) {
+        val painter = rememberImagePainter(meditation.imageUrl)
+        Image(
+            painter = painter,
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable {
+                    navController.navigate("CourseDetails/${meditation.name}")
+                },
+            contentScale = ContentScale.FillBounds,
+        )
+    }
+}
 
 @Composable
 fun MeditateBody(navController: NavHostController) {
@@ -105,13 +149,11 @@ fun MeditateBody(navController: NavHostController) {
     MenuArray(
         itemsTopics = listOf(
             TitleAndIconModel("All", R.drawable.all),
-//            TitleAndIconModel("Sleep", R.drawable.sleep),
             TitleAndIconModel("My", R.drawable.my),
             TitleAndIconModel("Kids", R.drawable.kids),
             TitleAndIconModel("Anxious", R.drawable.anxious),
             TitleAndIconModel("My", R.drawable.my),
             TitleAndIconModel("Anxious", R.drawable.anxious),
-//            TitleAndIconModel("Sleep", R.drawable.sleep),
             TitleAndIconModel("Kids", R.drawable.kids),
         )
     )
@@ -123,54 +165,6 @@ fun MeditateBody(navController: NavHostController) {
 
         navController.navigate("CourseDetails")
 
-    }
-}
-
-@Composable
-fun SeasonsSection(item: List<TitleAndIconModel>) {
-    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2)
-    FlowRow(
-        mainAxisSize = SizeMode.Expand,
-        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
-    ) {
-
-        item.forEachIndexed { index, item ->
-            SeasonItem(item_season = item, itemSize)
-        }
-    }
-}
-
-@Composable
-fun SeasonItem(item_season: TitleAndIconModel, itemSize: Dp) {
-
-    Box(
-        modifier = Modifier
-            .width(itemSize)
-            .padding(7.5.dp)
-            .aspectRatio(1f)
-            .clip(RoundedCornerShape(10.dp))
-    ) {
-
-        Image(
-            painter = painterResource(id = item_season.icon_id),
-            contentDescription = item_season.title,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .blur(100.dp)
-        ) {
-            Text(
-                text = item_season.title,
-                textAlign = TextAlign.Start,
-                color = White,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(10.dp)
-            )
-        }
     }
 }
 
@@ -203,10 +197,7 @@ fun MenuArray(
             }
         })
 
-
     }
-
-
 }
 
 @Composable
@@ -249,7 +240,6 @@ fun MenuItem(
 
                     }
                 }
-
 
             }
             Text(text = item.title, color = if (isSelected) activeTextColor else inactiveTextColor)

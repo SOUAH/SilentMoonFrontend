@@ -144,28 +144,44 @@ fun Sleep(navController: NavHostController) {
                             "45 MIN • SLEEP MUSIC",
                             R.drawable.night_island
                         ),
-                        SleepMode("Sweet Sleep", "45 MIN • SLEEP MUSIC", R.drawable.sweet_sleep_owls),
+                        SleepMode(
+                            "Sweet Sleep",
+                            "45 MIN • SLEEP MUSIC",
+                            R.drawable.sweet_sleep_owls
+                        ),
                         SleepMode("Good Night", "45 MIN • SLEEP MUSIC", R.drawable.good_night),
                         SleepMode(
                             "Night Island",
                             "45 MIN • SLEEP MUSIC",
                             R.drawable.night_island
                         ),
-                        SleepMode("Sweet Sleep", "45 MIN • SLEEP MUSIC", R.drawable.sweet_sleep_owls),
+                        SleepMode(
+                            "Sweet Sleep",
+                            "45 MIN • SLEEP MUSIC",
+                            R.drawable.sweet_sleep_owls
+                        ),
                         SleepMode("Good Night", "45 MIN • SLEEP MUSIC", R.drawable.good_night),
                         SleepMode(
                             "Night Island",
                             "45 MIN • SLEEP MUSIC",
                             R.drawable.night_island
                         ),
-                        SleepMode("Sweet Sleep", "45 MIN • SLEEP MUSIC", R.drawable.sweet_sleep_owls),
+                        SleepMode(
+                            "Sweet Sleep",
+                            "45 MIN • SLEEP MUSIC",
+                            R.drawable.sweet_sleep_owls
+                        ),
                         SleepMode("Good Night", "45 MIN • SLEEP MUSIC", R.drawable.good_night),
                         SleepMode(
                             "Night Island",
                             "45 MIN • SLEEP MUSIC",
                             R.drawable.night_island
                         ),
-                        SleepMode("Sweet Sleep", "45 MIN • SLEEP MUSIC", R.drawable.sweet_sleep_owls),
+                        SleepMode(
+                            "Sweet Sleep",
+                            "45 MIN • SLEEP MUSIC",
+                            R.drawable.sweet_sleep_owls
+                        ),
                         SleepMode("Good Night", "45 MIN • SLEEP MUSIC", R.drawable.good_night),
                     )
                 )
@@ -211,7 +227,8 @@ fun SleepMusicItem(item: SleepMode, onItemClicked: () -> Unit) {
                 painter = painterResource(id = item.icon_id),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth())
+                modifier = Modifier.fillMaxWidth()
+            )
 
             Text(
                 text = item.title,

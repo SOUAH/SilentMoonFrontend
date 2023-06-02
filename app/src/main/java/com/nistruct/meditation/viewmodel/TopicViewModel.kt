@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 // provide the necessary data and functionality for the UI components to interact with
-
 @HiltViewModel // enable injection of a ViewModel
 class TopicViewModel @Inject constructor(
     var topicRepository: TopicRepository
