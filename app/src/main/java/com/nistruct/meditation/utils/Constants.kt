@@ -2,7 +2,7 @@ package com.nistruct.meditation.utils
 
 object Constants {
 
-    const val BASE_URL = "https://1da0-102-159-57-112.eu.ngrok.io"
+    const val BASE_URL = "https://feac-102-159-57-112.eu.ngrok.io"
     const val DATASTORE_NAME = "DATASTORE_NAME"
     const val ACCESS_TOKEN = "ACCESS_TOKEN"
     const val USER_ID = "user_id"

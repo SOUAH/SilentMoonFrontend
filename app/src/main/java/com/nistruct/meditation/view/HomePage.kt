@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -20,10 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.nistruct.meditation.DesignContent.DailyCalm
-import com.nistruct.meditation.view.Header
 import com.nistruct.meditation.R
-import com.nistruct.meditation.data.entity.SleepMode
 import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.view.Header
 
 @Composable
 fun HomePage(navController: NavHostController) {
@@ -71,18 +68,6 @@ fun HomePage(navController: NavHostController) {
             )
 
 
-            ModeArray(
-                itemsTopics = listOf(
-                    SleepMode("Focus", "MEDITAION • 3-10 MIN", R.drawable.focus),
-                    SleepMode("Happines", "MEDITAION • 3-10 MIN", R.drawable.happiness),
-                    SleepMode("Focus", "MEDITAION • 3-10 MIN", R.drawable.focus),
-                    SleepMode("Happines", "MEDITAION • 3-10 MIN", R.drawable.happiness),
-                    SleepMode("Focus", "MEDITAION • 3-10 MIN", R.drawable.focus),
-                    SleepMode("Happines", "MEDITAION • 3-10 MIN", R.drawable.happiness),
-                )
-            )
-
-
         }
     }
 }
@@ -121,8 +106,10 @@ fun CardMode() {
                     fontSize = 18.sp,
                     color = Yellow,
                     modifier = Modifier
-                        .fillMaxWidth().padding(15.dp),
-                    fontWeight = FontWeight.Bold)
+                        .fillMaxWidth()
+                        .padding(15.dp),
+                    fontWeight = FontWeight.Bold
+                )
                 Text(
                     text = "Course",
                     textAlign = TextAlign.Start,
@@ -184,8 +171,10 @@ fun CardMode() {
                     fontSize = 18.sp,
                     color = Yellow,
                     modifier = Modifier
-                        .fillMaxWidth().padding(15.dp),
-                    fontWeight = FontWeight.Bold)
+                        .fillMaxWidth()
+                        .padding(15.dp),
+                    fontWeight = FontWeight.Bold
+                )
                 Text(
                     text = "Music",
                     textAlign = TextAlign.Start,
@@ -212,7 +201,6 @@ fun CardMode() {
                             .clickable {
 
                             }
-
                     )
                 }
             }
@@ -222,54 +210,6 @@ fun CardMode() {
 
     }
 
-
 }
 
-@Composable
-fun ModeArray(itemsTopics: List<SleepMode>) {
 
-    LazyRow(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
-    ) {
-        items(count = itemsTopics.size, itemContent = {
-            SleepModeItem(
-                item = itemsTopics[it],
-
-                ) {
-
-            }
-        })
-
-
-    }
-}
-
-@Composable
-fun SleepModeItem(item: SleepMode, onItemClicked: () -> Unit) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .clickable {
-            onItemClicked()
-        }) {
-        Image(
-            painter = painterResource(id = item.icon_id),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(width = 150.dp, height = 100.dp)
-
-        )
-
-        Text(
-            text = item.title,
-            fontWeight = FontWeight.Bold,
-            color = Black,
-            fontSize = 18.sp
-        )
-        Text(text = item.detail, fontSize = 11.sp, color = Gray_level3)
-
-    }
-}

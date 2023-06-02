@@ -345,7 +345,7 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
 
 
             ButtonDesign(text_color = White, bg_color = Purple, text_title = "SAVE") {
-                
+                //TODO
                 navController.navigate("MeditateV2")
             }
 

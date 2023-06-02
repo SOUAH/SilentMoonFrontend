@@ -57,4 +57,12 @@ class ApiImpl
             meditationListResponse.body()
         } else throw HttpException(meditationListResponse)
     }
+
+    override suspend fun updateUser(request: SetUserPreferencesRequestModel): UserResponse? {
+        val updateResponse = meditationAPI.updateUser(request)
+        Timber.tag("API_TEST_LOG_IN").i(updateResponse.code().toString())
+        return if (updateResponse.isSuccessful) {
+            updateResponse.body()
+        } else throw HttpException(updateResponse)
+    }
 }
