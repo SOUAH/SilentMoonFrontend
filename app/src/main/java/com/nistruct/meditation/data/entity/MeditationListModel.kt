@@ -5,6 +5,6 @@ import kotlinx.serialization.SerialName
 
 data class MeditationListModel(
 
-    @SerialName("meditation")
+    @SerialName("meditations")
     val meditations: Array<MeditationModel>,
 )

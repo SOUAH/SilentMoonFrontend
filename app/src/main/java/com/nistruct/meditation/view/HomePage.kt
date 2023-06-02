@@ -24,6 +24,7 @@ import com.nistruct.meditation.view.Header
 import com.nistruct.meditation.R
 import com.nistruct.meditation.data.entity.SleepMode
 import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.view.Header
 
 @Composable
 fun HomePage(navController: NavHostController) {
@@ -212,7 +213,6 @@ fun CardMode() {
                             .clickable {
 
                             }
-
                     )
                 }
             }

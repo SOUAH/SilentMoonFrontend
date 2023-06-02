@@ -7,12 +7,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -53,41 +56,42 @@ fun MeditateV2(navController: NavHostController) {
     var meditations = viewModel.meditations.observeAsState()
 
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
+    Scaffold(
+        bottomBar = {
+            BottomMenu(
+                selectedItemIndex,
+                items = listOf(
+                    TitleAndIconModel("Meditate", R.drawable.medidate),
+                ),
+            )
+        }
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 100.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-                MeditateBody(navController)
+            MeditateBody(navController)
+            val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2)
+            FlowRow(
+                mainAxisSize = SizeMode.Expand,
+                mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
+            ) {
             }
-            item {
-                val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2)
-                FlowRow(
-                    mainAxisSize = SizeMode.Expand,
-                    mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
+
+            meditations.value?.let { meditationList ->
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
                 ) {
-                }
-            }
-            item {
-                meditations.value?.let { meditationList ->
-                    Meditations(
-                        meditations = meditationList, navController
-                    )
+                    items(meditationList.size) { index ->
+                        MeditationItem(meditation = meditationList[index], navController)
+                    }
                 }
             }
         }
-    }
-
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
-        BottomMenu(
-            selectedItemIndex,
-            items = listOf(
-                TitleAndIconModel("Meditate", R.drawable.medidate),
-            ),
-        )
     }
 }
 
@@ -96,9 +100,7 @@ fun MeditateV2(navController: NavHostController) {
 @Composable
 fun Meditations(meditations: Array<MeditationModel>, navController: NavHostController) {
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-
-
+//    Column(modifier = Modifier.fillMaxWidth()) {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2), modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
@@ -108,7 +110,7 @@ fun Meditations(meditations: Array<MeditationModel>, navController: NavHostContr
             }
         }
 
-    }
+//    }
 }
 
 
@@ -129,7 +131,7 @@ fun MeditationItem(meditation: MeditationModel, navController: NavHostController
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    navController.navigate("CourseDetails/${meditation.name}")
+                    navController.navigate("CourseDetails/${meditation.meditationName}")
                 },
             contentScale = ContentScale.FillBounds,
         )
@@ -139,7 +141,7 @@ fun MeditationItem(meditation: MeditationModel, navController: NavHostController
 @Composable
 fun MeditateBody(navController: NavHostController) {
     Header(CustomColor = Black, painterResource = painterResource(id = R.drawable.logo))
-    BigTitleDesign("Meditate", MaterialTheme.typography.h3, FontWeight.Bold)
+    BigTitleDesign("Meditate", MaterialTheme.typography.h4, FontWeight.Bold)
     TitleDetail(
         text = "we can learn how to recognize when our minds are doing their normal everyday acrobatics.",
         color = Black,
@@ -162,9 +164,7 @@ fun MeditateBody(navController: NavHostController) {
         Daily_Calm, painterResource(id = R.drawable.daily_calm),
         painterResource(id = R.drawable.play_button), White, Black, Black
     ) {
-
         navController.navigate("CourseDetails")
-
     }
 }
 
@@ -197,7 +197,10 @@ fun MenuArray(
             }
         })
 
+
     }
+
+
 }
 
 @Composable
@@ -237,10 +240,8 @@ fun MenuItem(
                             tint = if (isSelected) inactiveTextColor else activeTextColor,
                             modifier = Modifier.size(20.dp)
                         )
-
                     }
                 }
-
             }
             Text(text = item.title, color = if (isSelected) activeTextColor else inactiveTextColor)
         }

@@ -11,6 +11,8 @@ import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,12 +23,15 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.nistruct.meditation.DesignContent.CircleButton
 import com.nistruct.meditation.DesignContent.MainTitle
 import com.nistruct.meditation.DesignContent.TitleDetail
 import com.nistruct.meditation.R
 import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.viewmodel.SongViewModel
+import com.nistruct.meditation.viewmodel.UserViewModel
 
 @Composable
 fun MusicV2(navController: NavHostController, musicName: String) {
@@ -34,16 +39,17 @@ fun MusicV2(navController: NavHostController, musicName: String) {
     val ic_hearth = if (ic_hearth_clicked.value) painterResource(id = R.drawable.red_heart)
     else painterResource(id = R.drawable.heart)
 
-    val ic_play_clicked = remember { mutableStateOf(false) }
-    val ic_play = if (ic_play_clicked.value) painterResource(id = R.drawable.stop_button)
-    else painterResource(id = R.drawable.play_button)
-
     val sliderValue = remember { mutableStateOf(0f) }
 
     val audio_lenght = 180000f
     val second15 = 15000f
 
+    val viewModel= hiltViewModel<SongViewModel>()
+    viewModel.playAudioFromUrl("https://7b56-41-62-117-63.eu.ngrok.io/song.mp3")
 
+    var isPlaying = viewModel.isPlaying.observeAsState(initial = false)
+
+    val ic_play = if (isPlaying.value) painterResource(id = R.drawable.stop_button) else painterResource(id = R.drawable.play_button)
 
     Box(
         modifier = Modifier
@@ -94,10 +100,16 @@ fun MusicV2(navController: NavHostController, musicName: String) {
 
             TitleDetail(text = "7 DAYS OF CALM", color = Gray_level3, align = TextAlign.Center)
 
-            MusicIcons(ic_play, ic_play_clicked,sliderValue,audio_lenght,second15)
+            MusicIcons(ic_play, isPlaying,sliderValue,audio_lenght,second15)
 
             SliderDesign(sliderValue,audio_lenght)
 
+        }
+
+        if (!isPlaying.value) {
+            viewModel.pausePlaying()
+        } else {
+            viewModel.startPlaying()
         }
 
     }
@@ -105,7 +117,7 @@ fun MusicV2(navController: NavHostController, musicName: String) {
 @Composable
 fun MusicIcons(
     ic_play: Painter,
-    ic_play_clicked: MutableState<Boolean>,
+    ic_play_clicked: State<Boolean>,
     sliderValue: MutableState<Float>,
     audio_lenght: Float,
     second15: Float,
@@ -142,9 +154,7 @@ fun MusicIcons(
                 bg_color = Black,
                 tint_color = White
             ) {
-
-                ic_play_clicked.value = !ic_play_clicked.value
-
+//                ic_play_clicked.value = !ic_play_clicked.value
             }
         }
         Icon(

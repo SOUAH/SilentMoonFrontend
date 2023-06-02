@@ -27,8 +27,7 @@ class MeditationRepository @Inject constructor(
     suspend fun getAllMeditations() {
         try {
             if (!dataStore.getAccessToken().isNullOrEmpty()) {
-                val getMeditations =
-                    apiInteractor.getMeditationList(dataStore.getAccessToken().toString())
+                val getMeditations = apiInteractor.getMeditationList(dataStore.getAccessToken().toString())
 
                 this.meditationList.value = getMeditations?.meditations
             }

@@ -42,28 +42,20 @@ fun ChooseTopic(navController: NavHostController) {
             contentScale = ContentScale.Fit, modifier = Modifier.fillMaxSize()
         )
         Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(top = 30.dp)) {
-
-
             MainTitle(title = "What Brings you", color = Black, align = TextAlign.Start)
-
             Text(
                 text = "to Silent Moon?",
                 color = Black,
                 fontSize = 28.sp,
                 modifier = Modifier.padding(start = 20.dp)
             )
-
             TitleDetail(text = "choose a topic to focus on:", color = Gray, align = TextAlign.Start)
-
             topics.value?.let { topicList ->
                 Topics(
                     topics = topicList, navController
                 )
             }
-
         }
-
-
     }
 }
 
@@ -72,8 +64,6 @@ fun ChooseTopic(navController: NavHostController) {
 fun Topics(topics: Array<TopicModel>, navController: NavHostController) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
-
-
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2), modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
@@ -82,7 +72,6 @@ fun Topics(topics: Array<TopicModel>, navController: NavHostController) {
                 TopicsItem(topic = topics[item], navController)
             }
         }
-
     }
 }
 

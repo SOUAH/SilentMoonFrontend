@@ -139,7 +139,6 @@ fun SignIn(navController: NavController) {
         if (btnClicked.value) {
             if (tokenResponse.value.toString() !== "" && username.value.toString() != "") {
                 navController.navigate("WelcomeScreen/${username.value.toString()}")
-                //navController.navigate("LaunchScreen")
                 scope.launch {
                     scaffoldState.snackbarHostState.showSnackbar(message = "Success Log In!")
                 }

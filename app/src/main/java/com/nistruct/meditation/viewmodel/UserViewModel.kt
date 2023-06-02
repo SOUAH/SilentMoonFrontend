@@ -14,17 +14,24 @@ import javax.inject.Inject
 @HiltViewModel // enable injection of a ViewModel
 class UserViewModel @Inject constructor(
     var userRepository: UserRepository,
-    var dataStore: DataStoreInterface
 ) : ViewModel() {//dependencies injected
 
     var email = MutableLiveData<String>()
     var username = MutableLiveData<String>()
     var accessToken = MutableLiveData<String>()
 
+    var favTopic = MutableLiveData<String>()
+    var notificationTime = MutableLiveData<String>()
+    var notificationDays = MutableLiveData<Array<String>>()
+
     init {
         email = userRepository.returnEmail()
         username = userRepository.returnUsername()
         accessToken = userRepository.returnToken()
+
+        var favTopic = userRepository.returnFavTopic()
+        var notificationTime = userRepository.returnNotificationTime()
+        var notificationDays = userRepository.returnNotificationDays()
     }
 
 

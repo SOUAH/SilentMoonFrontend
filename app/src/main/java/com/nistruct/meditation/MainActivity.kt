@@ -93,10 +93,13 @@ fun PageTransmitions(
             val chosenTopic = it.arguments?.getString("chosenTopic")!!
             Reminders(navController = navController, chosenTopic)
         }
-        composable("MeditateV2") {
+        composable("Meditate") {
             MeditateV2(navController = navController)
         }
-        composable("CourseDetails") {
+        composable("CourseDetails/{chosenMeditation}",
+            arguments = listOf(navArgument("chosenMeditation") { type = NavType.StringType })) {
+            val chosenMeditation = it.arguments?.getString("chosenMeditation")!!
+
             CourseDetails(navController = navController)
         }
 

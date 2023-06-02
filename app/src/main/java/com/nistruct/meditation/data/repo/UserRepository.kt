@@ -1,12 +1,15 @@
 package com.nistruct.meditation.data.repo
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.nistruct.meditation.data.AppDataStore.DataStoreInterface
 import com.nistruct.meditation.data.entity.ForgotPasswordRequest
 import com.nistruct.meditation.data.entity.LoginRequestModel
 import com.nistruct.meditation.data.entity.RegisterRequestModel
 import timber.log.Timber
+import java.time.LocalTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,10 +23,18 @@ class UserRepository @Inject constructor(
     var email = MutableLiveData<String>()
     var userName = MutableLiveData<String>()
 
+    var favTopic = MutableLiveData<String>()
+    var notificationTime = MutableLiveData<LocalTime>()
+    var notificationDays = MutableLiveData<Array<String>>()
+
     init {
         email = MutableLiveData<String>("")
         userName = MutableLiveData<String>("")
         accessToken = MutableLiveData<String>("")
+
+        var favTopic = MutableLiveData<String>("")
+        var notificationTime = MutableLiveData<LocalTime>(null)
+        var notificationDays = MutableLiveData<Array<String>>( null)
     }
 
     fun returnEmail(): MutableLiveData<String> {
@@ -38,7 +49,17 @@ class UserRepository @Inject constructor(
         return accessToken
     }
 
+    fun returnNotificationTime(): MutableLiveData<LocalTime> {
+        return notificationTime
+    }
 
+    fun returnFavTopic(): MutableLiveData<String> {
+        return favTopic
+    }
+
+    fun returnNotificationDays(): MutableLiveData<Array<String>> {
+        return notificationDays
+    }
     suspend fun registerUser(email: String, username: String, password: String) {
         val registeringRequest = RegisterRequestModel(
             email = email,
@@ -72,6 +93,15 @@ class UserRepository @Inject constructor(
 
                 this.email.value = currentUser?.email
                 this.userName.value = currentUser?.userName
+
+                var notificationTime = LocalTime.now().plusMinutes(5);
+                if (!currentUser?.notificationTime.isNullOrEmpty()){
+                    notificationTime = LocalTime.parse(currentUser?.notificationTime)
+                }
+
+                this.favTopic.value = currentUser?.favoriteTopic
+                this.notificationTime.value = notificationTime
+                this.notificationDays.value = currentUser?.notificationDays
             }
         } catch (t: Throwable) {
             Timber.i("TAG: ${t.message}")

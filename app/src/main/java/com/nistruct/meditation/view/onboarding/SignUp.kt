@@ -157,8 +157,6 @@ fun SignUp(navController: NavController) {
             emailResponse.value.toString() == emailSignUp.value &&
             tokenResponse.value.toString() !== ""
         ) {
-//            viewModel.putLogin(true)
-//            viewModel.putNickName(usernameSignUp.value)
             navController.navigate("WelcomeScreen/${usernameSignUp.value}")
             buttonClicked.value = !buttonClicked.value
         } else {

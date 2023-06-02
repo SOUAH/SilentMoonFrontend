@@ -238,7 +238,7 @@ fun DailyCalm(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(15.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -249,10 +249,10 @@ fun DailyCalm(
                     color = title_color,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = "APR 30  PAUSE PRACTICE",
-                    color = title_color.copy(alpha = 0.6f)
-                )
+//                Text(
+//                    text = "APR 30  PAUSE PRACTICE",
+//                    color = title_color.copy(alpha = 0.6f)
+//                )
             }
             Card(
                 modifier = Modifier.size(60.dp),
@@ -271,14 +271,11 @@ fun DailyCalm(
                         contentDescription = "",
                         tint = ic_tint, modifier = Modifier
                             .fillMaxSize()
-                            .padding(15.dp)
+                            .padding(18.dp)
                     )
                 }
-
             }
-
         }
-
     }
 }
 

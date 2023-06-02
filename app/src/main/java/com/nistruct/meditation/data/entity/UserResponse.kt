@@ -7,7 +7,7 @@ data class UserResponse(
     @SerializedName("_id")//get _id from json and put it in the id var I created
     @Expose
     var id : String,
-    @SerializedName("userName")
+    @SerializedName("username")
     @Expose
     var userName : String,
     @SerializedName("email")
