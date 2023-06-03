@@ -3,10 +3,11 @@ package com.nistruct.meditation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nistruct.meditation.data.AppDataStore.DataStoreInterface
 import com.nistruct.meditation.data.repo.UserRepository
+import com.nistruct.meditation.utils.NotificationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel // enable injection of a ViewModel
 class UserViewModel @Inject constructor(
     var userRepository: UserRepository,
+    private val notificationHelper: NotificationHelper // Injecting notification helper
 ) : ViewModel() {//dependencies injected
 
     var email = MutableLiveData<String>()
@@ -33,6 +35,8 @@ class UserViewModel @Inject constructor(
         favTopic = userRepository.returnFavTopic()
         notificationTime = userRepository.returnNotificationTime()
         notificationDays = userRepository.returnNotificationDays()
+
+        notificationHelper.startScheduler(LocalTime.now().plusMinutes(1), arrayOf("Sunday"))
     }
 
 
@@ -54,7 +58,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun updatUser(
+    fun updateUser(
         favoriteTopic: String,
         notificationDays: Array<String>,
         notificationTime: LocalTime

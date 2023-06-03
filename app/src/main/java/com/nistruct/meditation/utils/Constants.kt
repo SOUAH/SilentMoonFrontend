@@ -11,4 +11,7 @@ object Constants {
     const val USER_NOTIFICATION_TIME = "user_notification_time"
     const val USER_FAVORITE_TOPIC = "user_favorite_topic"
     const val USER_NOTIFICATION_DAYS = "user_notification_days"
+
+    const val CHANNEL_ID = "channelID"
+    const val CHANNEL_NAME = "channelName"
 }

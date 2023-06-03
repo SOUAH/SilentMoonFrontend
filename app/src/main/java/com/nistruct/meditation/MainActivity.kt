@@ -40,9 +40,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
-                    PageTransmitions()
-
+                    PageTransitions()
                 }
             }
         }
@@ -52,14 +50,9 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PageTransmitions(
+fun PageTransitions(
 ) {
-    var viewModel: UserViewModel = hiltViewModel()
-
     var startDestination = "LaunchScreen"
-
-//    if (viewModel.getLogin()) startDestination = "ChooseTopic"
-
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = startDestination) {

@@ -137,7 +137,7 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
             }
 
             ButtonDesign(text_color = White, bg_color = Purple, text_title = "SAVE") {
-                viewModel.updatUser(
+                viewModel.updateUser(
                     chosenTopic,
                     daysOfWeek.filter { it.clicked.value }.map { it.name }.toTypedArray(),
                     wheelPickerValue.value

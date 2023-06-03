@@ -83,5 +83,9 @@ object AppModule {
             .build()
     }
 
-
+    @Singleton
+    @Provides
+    fun provideNotificationHelper(
+        @ApplicationContext context: Context
+    ): NotificationHelper = NotificationHelper(context)
 }
