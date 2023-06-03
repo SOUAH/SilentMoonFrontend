@@ -7,9 +7,13 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.nistruct.meditation.data.AppDataStore.DataStoreInterface
+import com.nistruct.meditation.data.entity.MeditationModel
+import com.nistruct.meditation.data.entity.TopicModel
 import com.nistruct.meditation.data.entity.UserResponse
 import com.nistruct.meditation.utils.Constants.ACCESS_TOKEN
 import com.nistruct.meditation.utils.Constants.DATASTORE_NAME
+import com.nistruct.meditation.utils.Constants.MEDITATION_LIST
+import com.nistruct.meditation.utils.Constants.TOPIC_LIST
 import com.nistruct.meditation.utils.Constants.USER_EMAIL
 import com.nistruct.meditation.utils.Constants.USER_FAVORITE_TOPIC
 import com.nistruct.meditation.utils.Constants.USER_ID
@@ -17,6 +21,8 @@ import com.nistruct.meditation.utils.Constants.USER_NAME
 import com.nistruct.meditation.utils.Constants.USER_NOTIFICATION_DAYS
 import com.nistruct.meditation.utils.Constants.USER_NOTIFICATION_TIME
 import kotlinx.coroutines.flow.first
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
@@ -109,5 +115,21 @@ class DataStoreRepository @Inject constructor(private val context: Context) : Da
         val notificationDaysString =
             preference[stringPreferencesKey(USER_NOTIFICATION_DAYS)] ?: return null
         return notificationDaysString.split(",").toTypedArray()
+    }
+
+    override suspend fun putTopicList(topicList: List<TopicModel>) {
+        val preferencesKey = stringPreferencesKey(TOPIC_LIST)
+
+        context.dataStore.edit { preferences ->
+            preferences[preferencesKey] = Json.encodeToString(topicList)
+        }
+    }
+
+    override suspend fun putMeditationList(meditaionList: List<MeditationModel>) {
+        val preferencesKey = stringPreferencesKey(MEDITATION_LIST)
+
+        context.dataStore.edit { preferences ->
+            preferences[preferencesKey] = Json.encodeToString(meditaionList)
+        }
     }
 }

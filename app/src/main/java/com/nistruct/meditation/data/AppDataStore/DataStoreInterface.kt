@@ -1,5 +1,7 @@
 package com.nistruct.meditation.data.AppDataStore
 
+import com.nistruct.meditation.data.entity.MeditationModel
+import com.nistruct.meditation.data.entity.TopicModel
 import com.nistruct.meditation.data.entity.UserResponse
 
 interface DataStoreInterface {
@@ -26,4 +28,7 @@ interface DataStoreInterface {
 
     suspend fun getUserNotificationDays(): Array<String>?
 
+    suspend fun putTopicList(topicList: List<TopicModel>)
+
+    suspend fun putMeditationList(meditationList: List<MeditationModel>)
 }
