@@ -26,6 +26,8 @@ class Scheduler : BroadcastReceiver() {
     var NOTIFICATION_ID = 0
 
     override fun onReceive(context: Context, intent: Intent) {
+        //I need to get notification helper in order to schedule next reminder but for BroadcastReceiver it must be done like this
+        //a bit of a more complex topic, will be explained later
         val appComponent = EntryPointAccessors.fromApplication(context, ReceiverEntryPoint::class.java)
         val notificationHelper = appComponent.getNotificationHelper()
         sendNotification(context)
@@ -34,6 +36,7 @@ class Scheduler : BroadcastReceiver() {
     }
 
     fun sendNotification(applicationContext: Context) {
+        //updating id so every notification will have unique one
         NOTIFICATION_ID++
         
         val notificationManager = ContextCompat.getSystemService(
@@ -43,7 +46,6 @@ class Scheduler : BroadcastReceiver() {
 
         val contentIntent = Intent(applicationContext, MainActivity::class.java)
 
-        // TODO: Step 1.12 create PendingIntent
         val contentPendingIntent = PendingIntent.getActivity(
             applicationContext,
             NOTIFICATION_ID,
@@ -53,19 +55,14 @@ class Scheduler : BroadcastReceiver() {
 
         // Build the notification
         val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            // TODO: Step 1.3 set title, text and icon to builder
             .setSmallIcon(R.drawable.logo)
-            .setContentTitle("title")
-            .setContentText("body")
-            // TODO: Step 1.13 set content intent
+            .setContentTitle("Silent Moon")
+            .setContentText("Your meditation reminder")
             .setContentIntent(contentPendingIntent)
-
-            // TODO: Step 2.5 set priority
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
 
         with(notificationManager) {
-            // notificationId is a unique int for each notification that you must define
             notify(NOTIFICATION_ID, builder.build())
         }
     }

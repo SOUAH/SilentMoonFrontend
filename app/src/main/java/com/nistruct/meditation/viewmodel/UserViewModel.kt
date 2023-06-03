@@ -1,6 +1,7 @@
 package com.nistruct.meditation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nistruct.meditation.data.repo.UserRepository
@@ -27,6 +28,12 @@ class UserViewModel @Inject constructor(
     var notificationTime = MutableLiveData<LocalTime>()
     var notificationDays = MutableLiveData<Array<String>>()
 
+    //setting function that will be called when change is observed
+    private val timeObserver = Observer<LocalTime> { checkAndScheduleNotifications() }
+    private val daysObserver = Observer<Array<String>> { checkAndScheduleNotifications() }
+
+    //setting flag so scheduler is only called once
+    private var schedulerStarted = false
     init {
         email = userRepository.returnEmail()
         username = userRepository.returnUsername()
@@ -36,7 +43,10 @@ class UserViewModel @Inject constructor(
         notificationTime = userRepository.returnNotificationTime()
         notificationDays = userRepository.returnNotificationDays()
 
-        notificationHelper.startScheduler(LocalTime.now().plusMinutes(1), arrayOf("Sunday"))
+        //observing for changes in notificationTime and notificationDays;
+        //initially both are empty, when I get data from db they get populated
+        notificationTime.observeForever(timeObserver)
+        notificationDays.observeForever(daysObserver)
     }
 
 
@@ -66,5 +76,22 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.updateUser(favoriteTopic, notificationDays, notificationTime)
         }
+    }
+
+    private fun checkAndScheduleNotifications() {
+        val time = notificationTime.value
+        val days = notificationDays.value
+
+        if (time != null && days != null && !schedulerStarted) {
+            notificationHelper.startScheduler(time, days)
+            schedulerStarted = !schedulerStarted
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        // Don't forget to remove observers when the ViewModel is destroyed
+        notificationTime.removeObserver(timeObserver)
+        notificationDays.removeObserver(daysObserver)
     }
 }
