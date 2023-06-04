@@ -26,7 +26,12 @@ import com.nistruct.meditation.ui.theme.*
 import com.nistruct.meditation.viewmodel.UserViewModel
 import java.time.LocalTime
 
-data class Day(val name: String, val shortName: String, val clicked: MutableState<Boolean>, val color: MutableState<Color>)
+data class Day(
+    val name: String,
+    val shortName: String,
+    val clicked: MutableState<Boolean>,
+    val color: MutableState<Color>
+)
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -88,7 +93,6 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                 color = Gray,
                 modifier = Modifier.padding(start = 20.dp, end = 40.dp)
             )
-
             Card(
                 modifier = Modifier
                     .padding(all = 20.dp)
@@ -110,7 +114,6 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                     }
                 }
             }
-
             Text(
                 text = "Which day would you like to meditate?",
                 style = MaterialTheme.typography.h4,
@@ -124,7 +127,6 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                 color = Gray,
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 40.dp)
             )
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,7 +137,6 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                     DayCard(day)
                 }
             }
-
             ButtonDesign(text_color = White, bg_color = Purple, text_title = "SAVE") {
                 viewModel.updateUser(
                     chosenTopic,
@@ -159,14 +160,12 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
         }
     }
     if (buttonClicked.value) {
-
         if (favTopic.value.toString() == chosenTopic
         ) {
             navController.navigate("Meditate")
             buttonClicked.value = !buttonClicked.value
         } else {
         }
-
     }
 }
 

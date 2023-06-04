@@ -30,6 +30,10 @@ class MeditationRepository @Inject constructor(
                 val getMeditations = apiInteractor.getMeditationList(dataStore.getAccessToken().toString())
 
                 this.meditationList.value = getMeditations?.meditations
+
+                getMeditations?.meditations?.let {
+                    dataStore.putMeditationList(it)
+                }
             }
         } catch (t: Throwable) {
             Timber.i("TAG: ${t.message}")

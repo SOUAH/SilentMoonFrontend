@@ -2,10 +2,25 @@ package com.nistruct.meditation.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -16,7 +31,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.nistruct.meditation.DesignContent.*
+import com.nistruct.meditation.DesignContent.ButtonDesign
+import com.nistruct.meditation.DesignContent.CircleButton
+import com.nistruct.meditation.DesignContent.MainTitle
+import com.nistruct.meditation.DesignContent.TextFieldDesign
+import com.nistruct.meditation.DesignContent.TextFieldPasswordDesign
 import com.nistruct.meditation.R
 import com.nistruct.meditation.ui.theme.Black
 import com.nistruct.meditation.ui.theme.Gray
@@ -133,7 +152,6 @@ fun SignUp(navController: NavController) {
                             buttonClicked.value = !buttonClicked.value
                         }
                     }
-
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
@@ -161,10 +179,8 @@ fun SignUp(navController: NavController) {
             buttonClicked.value = !buttonClicked.value
         } else {
         }
-
     }
 }
-
 
 @Composable
 fun SignUpAllTextLines(
@@ -188,7 +204,6 @@ fun SignUpAllTextLines(
         ImeAction.Next
     ) {
     }
-
     TextFieldDesign(
         email, "Email",
         painterResource(id = R.drawable.check),
@@ -196,7 +211,6 @@ fun SignUpAllTextLines(
         ImeAction.Next
     ) {
     }
-
     TextFieldPasswordDesign(
         value = password,
         hint = "Password",
@@ -204,7 +218,6 @@ fun SignUpAllTextLines(
         keyboardType = KeyboardType.Password,
         imeAction = ImeAction.Done, showPassword
     )
-
 }
 
 fun isValidEmail(email: String): Boolean {

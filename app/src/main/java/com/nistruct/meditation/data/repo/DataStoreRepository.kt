@@ -117,7 +117,7 @@ class DataStoreRepository @Inject constructor(private val context: Context) : Da
         return notificationDaysString.split(",").toTypedArray()
     }
 
-    override suspend fun putTopicList(topicList: List<TopicModel>) {
+    override suspend fun putTopicList(topicList: Array<TopicModel>) {
         val preferencesKey = stringPreferencesKey(TOPIC_LIST)
 
         context.dataStore.edit { preferences ->
@@ -125,7 +125,7 @@ class DataStoreRepository @Inject constructor(private val context: Context) : Da
         }
     }
 
-    override suspend fun putMeditationList(meditaionList: List<MeditationModel>) {
+    override suspend fun putMeditationList(meditaionList: Array<MeditationModel>) {
         val preferencesKey = stringPreferencesKey(MEDITATION_LIST)
 
         context.dataStore.edit { preferences ->

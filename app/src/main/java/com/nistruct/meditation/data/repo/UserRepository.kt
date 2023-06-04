@@ -1,8 +1,6 @@
 package com.nistruct.meditation.data.repo
 
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.nistruct.meditation.data.AppDataStore.DataStoreInterface
 import com.nistruct.meditation.data.entity.ForgotPasswordRequest
@@ -37,7 +35,7 @@ class UserRepository @Inject constructor(
 
         favTopic = MutableLiveData<String>("")
         notificationTime = MutableLiveData<LocalTime>(null)
-        notificationDays = MutableLiveData<Array<String>>( null)
+        notificationDays = MutableLiveData<Array<String>>(null)
     }
 
     fun returnEmail(): MutableLiveData<String> {
@@ -63,6 +61,7 @@ class UserRepository @Inject constructor(
     fun returnNotificationDays(): MutableLiveData<Array<String>> {
         return notificationDays
     }
+
     suspend fun registerUser(email: String, username: String, password: String) {
         val registeringRequest = RegisterRequestModel(
             email = email,
@@ -98,7 +97,7 @@ class UserRepository @Inject constructor(
                 this.userName.value = currentUser?.userName
 
                 var notificationTime = LocalTime.now().plusMinutes(5);
-                if (!currentUser?.notificationTime.isNullOrEmpty()){
+                if (!currentUser?.notificationTime.isNullOrEmpty()) {
                     notificationTime = LocalTime.parse(currentUser?.notificationTime)
                 }
 
@@ -114,7 +113,6 @@ class UserRepository @Inject constructor(
             Timber.i("TAG: ${t.message}")
         }
     }
-
 
     suspend fun loginUser(username: String, password: String) {
         val loginUser = LoginRequestModel(
@@ -158,10 +156,14 @@ class UserRepository @Inject constructor(
                 notificationTime = notificationTime.toString(),
             )
             try {
-                val updatedUser = apiInteractor.updateUser(accessToken.value.toString(),dataStore.getUserId().toString(), updatingRequest)
+                val updatedUser = apiInteractor.updateUser(
+                    accessToken.value.toString(),
+                    dataStore.getUserId().toString(),
+                    updatingRequest
+                )
 
                 var notificationTime = LocalTime.now().plusMinutes(5);
-                if (!updatedUser?.notificationTime.isNullOrEmpty()){
+                if (!updatedUser?.notificationTime.isNullOrEmpty()) {
                     notificationTime = LocalTime.parse(updatedUser?.notificationTime)
                 }
 

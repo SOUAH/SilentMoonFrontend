@@ -28,7 +28,7 @@ interface DataStoreInterface {
 
     suspend fun getUserNotificationDays(): Array<String>?
 
-    suspend fun putTopicList(topicList: List<TopicModel>)
+    suspend fun putTopicList(topicList: Array<TopicModel>)
 
-    suspend fun putMeditationList(meditationList: List<MeditationModel>)
+    suspend fun putMeditationList(meditationList: Array<MeditationModel>)
 }

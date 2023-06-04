@@ -35,7 +35,6 @@ fun SignIn(navController: NavController) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-
     val emailSignIn = remember { mutableStateOf("") }
     val passwordSignIn = remember { mutableStateOf("") }
     var showPassword = remember {
@@ -63,9 +62,7 @@ fun SignIn(navController: NavController) {
                             .height(400.dp),
                         contentScale = ContentScale.Crop
                     )
-
                     Column(Modifier.fillMaxSize()) {
-
                         CircleButton(
                             painterResource = painterResource(id = R.drawable.back),
                             bg_color = White,
@@ -73,13 +70,11 @@ fun SignIn(navController: NavController) {
                         ) {
                             navController.popBackStack()
                         }
-
                         MainTitle(
                             title = "Welcome Back!",
                             color = Black,
                             align = TextAlign.Center
                         )
-
                         TextFieldDesign(
                             value = emailSignIn,
                             hint = "Email adress",
@@ -87,7 +82,6 @@ fun SignIn(navController: NavController) {
                             keyboardType = KeyboardType.Email,
                             imeAction = ImeAction.Next
                         ) {}
-
                         TextFieldPasswordDesign(
                             value = passwordSignIn,
                             hint = "Password",
@@ -111,7 +105,6 @@ fun SignIn(navController: NavController) {
                                 }
                             }
                         }
-
                         Text(
                             text = "Forgot Password?",
                             fontWeight = FontWeight.Bold,
@@ -145,7 +138,6 @@ fun SignIn(navController: NavController) {
                 btnClicked.value = !btnClicked.value
             }
         }
-
         fun isValidEmail(email: String): Boolean {
             val regexPattern = Regex("^([A-Za-z0-9_+\\-.])+@([A-Za-z0-9_+\\-.])+\\.([A-Za-z]{2,})$")
             return regexPattern.matches(email)

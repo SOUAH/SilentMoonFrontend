@@ -56,7 +56,6 @@ object AppModule {
         return ApiImpl(userAPI)
     }
 
-
     @Singleton
     @Provides
     fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
@@ -71,7 +70,6 @@ object AppModule {
             .Builder()
             .build()
     }
-
 
     @Singleton
     @Provides
