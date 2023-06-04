@@ -22,7 +22,7 @@ import com.nistruct.meditation.view.SignUpAndSignIn
 import com.nistruct.meditation.view.WelcomeScreen
 import com.nistruct.meditation.view.meditations.CourseDetails
 import com.nistruct.meditation.view.meditations.Meditate
-import com.nistruct.meditation.view.meditations.MusicV2
+import com.nistruct.meditation.view.meditations.Music
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -93,7 +93,7 @@ fun PageTransitions(
             arguments = listOf(navArgument("musicName") { type = NavType.StringType })
         ) {
             val musicName = it.arguments?.getString("musicName")!!
-            MusicV2(navController, musicName)
+            Music(navController, musicName)
         }
     }
 }

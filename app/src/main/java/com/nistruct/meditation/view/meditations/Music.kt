@@ -3,7 +3,14 @@ package com.nistruct.meditation.view.meditations
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Slider
@@ -29,11 +36,14 @@ import com.nistruct.meditation.DesignContent.CircleButton
 import com.nistruct.meditation.DesignContent.MainTitle
 import com.nistruct.meditation.DesignContent.TitleDetail
 import com.nistruct.meditation.R
-import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.ui.theme.Black
+import com.nistruct.meditation.ui.theme.Clear_Yellow
+import com.nistruct.meditation.ui.theme.Gray_level3
+import com.nistruct.meditation.ui.theme.White
 import com.nistruct.meditation.viewmodel.SongViewModel
 
 @Composable
-fun MusicV2(navController: NavHostController, musicName: String) {
+fun Music(navController: NavHostController, musicName: String) {
     val ic_hearth_clicked = remember { mutableStateOf(false) }
     val ic_hearth = if (ic_hearth_clicked.value) painterResource(id = R.drawable.red_heart)
     else painterResource(id = R.drawable.heart)
@@ -43,12 +53,13 @@ fun MusicV2(navController: NavHostController, musicName: String) {
     val audio_lenght = 180000f
     val second15 = 15000f
 
-    val viewModel= hiltViewModel<SongViewModel>()
-    viewModel.playAudioFromUrl("https://7b56-41-62-117-63.eu.ngrok.io/song.mp3")
+    val viewModel = hiltViewModel<SongViewModel>()
+//    viewModel.playAudioFromUrl(BASE_URL + "/song.mp3")
 
     var isPlaying = viewModel.isPlaying.observeAsState(initial = false)
 
-    val ic_play = if (isPlaying.value) painterResource(id = R.drawable.stop_button) else painterResource(id = R.drawable.play_button)
+    val ic_play =
+        if (isPlaying.value) painterResource(id = R.drawable.stop_button) else painterResource(id = R.drawable.play_button)
 
     Box(
         modifier = Modifier
@@ -60,50 +71,26 @@ fun MusicV2(navController: NavHostController, musicName: String) {
             modifier = Modifier.fillMaxSize()
         )
         Column(modifier = Modifier.fillMaxSize()) {
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-
                 CircleButton(
                     painterResource(id = R.drawable.back), White,
                     Black
                 ) {
                     navController.popBackStack()
                 }
-
-                Row() {
-                    CircleButton(
-                        ic_hearth, Black,
-                        White
-                    ) {
-                        ic_hearth_clicked.value = !ic_hearth_clicked.value
-                        navController.popBackStack()
-                    }
-                    CircleButton(
-                        painterResource(id = R.drawable.download), Black,
-                        White
-                    ) {
-                        navController.popBackStack()
-                    }
-                }
-
             }
-
         }
 
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
 
             MainTitle(title = musicName, color = Black, align = TextAlign.Center)
-
             TitleDetail(text = "7 DAYS OF CALM", color = Gray_level3, align = TextAlign.Center)
-
-            MusicIcons(ic_play, isPlaying,sliderValue,audio_lenght,second15)
-
-            SliderDesign(sliderValue,audio_lenght)
+            MusicIcons(ic_play, isPlaying, sliderValue, audio_lenght, second15)
+            SliderDesign(sliderValue, audio_lenght)
         }
-
         if (!isPlaying.value) {
             viewModel.pausePlaying()
         } else {
@@ -112,6 +99,7 @@ fun MusicV2(navController: NavHostController, musicName: String) {
 
     }
 }
+
 @Composable
 fun MusicIcons(
     ic_play: Painter,
@@ -119,13 +107,16 @@ fun MusicIcons(
     sliderValue: MutableState<Float>,
     audio_lenght: Float,
     second15: Float,
- ) {
+) {
 
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 20.dp), horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
 
-    ) {
+        ) {
 
         Icon(
             painter = painterResource(id = R.drawable.past_15_sc),
@@ -175,20 +166,21 @@ fun MusicIcons(
 @Composable
 fun SliderDesign(sliderValue: MutableState<Float>, audio_lenght: Float) {
 
-    val audio_lenght_millis : Float =audio_lenght.toFloat()
-    val audio_lenght_minutes  = ((audio_lenght_millis / 1000)  / 60).toInt()
+    val audio_lenght_millis: Float = audio_lenght.toFloat()
+    val audio_lenght_minutes = ((audio_lenght_millis / 1000) / 60).toInt()
     val audio_lenght_seconds = ((audio_lenght_millis / 1000) % 60).toInt()
     val audio_lenght = "$audio_lenght_minutes:$audio_lenght_seconds"
 
-    val audio_start_millis : Float = sliderValue.value
-    val audio_start_minutes  = ((audio_start_millis / 1000)  / 60).toInt()
+    val audio_start_millis: Float = sliderValue.value
+    val audio_start_minutes = ((audio_start_millis / 1000) / 60).toInt()
     val audio_start_seconds = ((audio_start_millis / 1000) % 60).toInt()
     val audio_start = "$audio_start_minutes:$audio_start_seconds"
 
-    Slider(value = sliderValue.value, onValueChange = {
-        sliderValue.value = it
+    Slider(
+        value = sliderValue.value, onValueChange = {
+            sliderValue.value = it
 
-    }, valueRange = 0f..audio_lenght_millis,
+        }, valueRange = 0f..audio_lenght_millis,
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp),
@@ -196,10 +188,13 @@ fun SliderDesign(sliderValue: MutableState<Float>, audio_lenght: Float) {
             thumbColor = Black,
             activeTrackColor = Black,
             inactiveTrackColor = Gray_level3
-        ))
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+        )
+    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp), horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         Text(text = audio_start)
         Text(text = audio_lenght)
     }

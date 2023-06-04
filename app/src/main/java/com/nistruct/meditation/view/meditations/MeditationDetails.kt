@@ -1,15 +1,39 @@
 package com.nistruct.meditation.view.meditations
 
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,13 +56,14 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
 import com.nistruct.meditation.DesignContent.CircleButton
-import kotlin.math.max
-import kotlin.math.min
 import com.nistruct.meditation.R
 import com.nistruct.meditation.data.entity.MeditationModel
 import com.nistruct.meditation.data.entity.MusicModel
-import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.ui.theme.Black
+import com.nistruct.meditation.ui.theme.Gray_level3
 import com.nistruct.meditation.viewmodel.MeditationViewModel
+import kotlin.math.max
+import kotlin.math.min
 
 val AppBarCollapsedHeight = 70.dp
 val AppBarExpendedHeight = 400.dp
@@ -67,7 +92,11 @@ fun MainFragment(navController: NavHostController, meditation: MeditationModel) 
 }
 
 @Composable
-fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController, meditation: MeditationModel) {
+fun ToolbarDesign(
+    scrollState: LazyListState,
+    navController: NavHostController,
+    meditation: MeditationModel
+) {
     val imageHeight = AppBarExpendedHeight - AppBarCollapsedHeight
 
     val maxOffset =
@@ -164,45 +193,46 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController, 
 }
 
 @Composable
-fun Content(scrollState: LazyListState, navController: NavHostController, meditation: MeditationModel) {
-    LazyColumn(contentPadding = PaddingValues(top = AppBarExpendedHeight), state = scrollState) {
-        item {
-            CourseDetailsBody(meditation)
-            Divider()
-            Column {
-                ListenMusics(
-                    itemMusic = listOf(
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Body Scan", 5),
-                        MusicModel("Making Happiness", 3),
-                        MusicModel("Body Scan", 5),
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Focus Attention", 3),
-                        MusicModel("Body Scan", 5)
-                    ), navController
+fun Content(
+    scrollState: LazyListState,
+    navController: NavHostController,
+    meditation: MeditationModel
+) {
+    Column {
+        Spacer(modifier = Modifier.height(AppBarCollapsedHeight))
+        LazyColumn(
+            contentPadding = PaddingValues(top = AppBarExpendedHeight - AppBarCollapsedHeight),
+            state = scrollState
+        ) {
+            item {
+                Text(
+                    text = meditation.description,
+                    color = Gray_level3,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(start = 20.dp, bottom = 10.dp)
                 )
+                Divider()
+                Column {
+                    ListenMusics(
+                        itemMusic = listOf(
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Body Scan", 5),
+                            MusicModel("Making Happiness", 3),
+                            MusicModel("Body Scan", 5),
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Focus Attention", 3),
+                            MusicModel("Body Scan", 5)
+                        ), navController
+                    )
+                }
             }
         }
     }
-}
-
-@Composable
-fun CourseDetailsBody(meditation: MeditationModel) {
-    Text(
-        text = meditation.meditationName, color = Gray_level3, textAlign = TextAlign.Start,
-        modifier = Modifier.padding(20.dp)
-    )
-    Text(
-        text = meditation.description,
-        color = Gray_level3,
-        textAlign = TextAlign.Start,
-        modifier = Modifier.padding(start = 20.dp)
-    )
 }
 
 @Composable
@@ -222,9 +252,7 @@ fun ListenMusics(
         itemMusic.forEachIndexed { index, item ->
             MusicItem(
                 item = item,
-                isSelected = (index == selectedItemIndex), navController
             ) {
-                selectedItemIndex = index
                 navController.navigate("Music/${item.title}")
             }
         }
@@ -234,8 +262,6 @@ fun ListenMusics(
 @Composable
 fun MusicItem(
     item: MusicModel,
-    isSelected: Boolean,
-    navController: NavHostController,
     onItemClick: () -> Unit
 ) {
     Column(
@@ -246,37 +272,34 @@ fun MusicItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(10.dp)
+                .clickable {
+                    onItemClick()
+                },
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Card(
                 modifier = Modifier.size(60.dp),
                 border = BorderStroke(
-                    1.dp, if (isSelected) Purple
-                    else Gray_level3
+                    1.dp, Gray_level3
                 ),
                 shape = CircleShape,
                 elevation = 7.dp
             ) {
-
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable {
-                            onItemClick()
-
-                        }
-                        .background(if (isSelected) Purple else com.nistruct.meditation.ui.theme.White),
+                        .background(com.nistruct.meditation.ui.theme.White),
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.play_button),
                         contentDescription = "",
-                        tint = if (isSelected) com.nistruct.meditation.ui.theme.White
-                        else Gray_level3, modifier = Modifier
+                        tint = Gray_level3,
+                        modifier = Modifier
                             .fillMaxSize()
-                            .padding(15.dp)
+                            .padding(19.dp)
                     )
                 }
             }
