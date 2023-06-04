@@ -1,8 +1,9 @@
 package com.nistruct.meditation.data.entity
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MeditationModel(
     @SerializedName("_id")
     val id: String,

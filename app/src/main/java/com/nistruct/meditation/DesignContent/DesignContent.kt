@@ -5,11 +5,25 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -30,7 +44,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nistruct.meditation.data.entity.TitleAndIconModel
-import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.ui.theme.Black
+import com.nistruct.meditation.ui.theme.Gray
+import com.nistruct.meditation.ui.theme.Gray_level2
+import com.nistruct.meditation.ui.theme.Purple
 
 
 @Composable
@@ -56,12 +73,14 @@ fun ButtonDesign(
             }
             .padding(20.dp))
 }
+
 @Composable
 fun BigTitleDesign(text: String, h3: TextStyle, bold: FontWeight) {
     Text(
         text = text,
         style = h3,
-        fontWeight = bold)
+        fontWeight = bold
+    )
 }
 
 @Composable
@@ -112,7 +131,7 @@ fun CircleButton(
                     onItemClicked()
                 }
                 .background(bg_color)
-             ) {
+        ) {
             Image(
                 painter = painterResource,
                 contentDescription = "", modifier = Modifier
@@ -222,7 +241,7 @@ fun DailyCalm(
     painterResource: Painter,
     ic_tint: Color,
     circle_color: Color,
-    title_color : Color,
+    title_color: Color,
     onItemClicked: () -> Unit
 ) {
     Box(
@@ -256,7 +275,8 @@ fun DailyCalm(
             Card(
                 modifier = Modifier.size(60.dp),
                 shape = CircleShape,
-                elevation = 3.dp) {
+                elevation = 3.dp
+            ) {
                 Row(horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
@@ -318,7 +338,6 @@ fun BottomMenu(
     activeTextColor: Color = Color.White,
     inactiveTextColor: Color = Gray,
 ) {
-
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
@@ -327,7 +346,6 @@ fun BottomMenu(
             .background(Color.White)
             .padding(15.dp)
     ) {
-
         items.forEachIndexed { index, item ->
             BottomMenuItem(
                 item = item,
