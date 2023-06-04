@@ -56,6 +56,7 @@ fun Meditate(navController: NavHostController) {
                 selectedItemIndex,
                 items = listOf(
                     TitleAndIconModel("Meditate", R.drawable.medidate),
+                    TitleAndIconModel("User", R.drawable.user),
                 ),
             )
         }
