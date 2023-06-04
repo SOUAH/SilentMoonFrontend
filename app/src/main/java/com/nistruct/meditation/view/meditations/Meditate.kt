@@ -90,7 +90,6 @@ fun Meditate(navController: NavHostController) {
                 mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
             ) {
             }
-
             meditations.value?.let { meditationList ->
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
@@ -108,7 +107,6 @@ fun Meditate(navController: NavHostController) {
 
 @Composable
 fun MeditationItem(meditation: MeditationModel, navController: NavHostController) {
-
     Box(
         modifier = Modifier
             .padding(7.5.dp)
@@ -139,7 +137,6 @@ fun MeditateBody(navController: NavHostController) {
         color = Black,
         align = TextAlign.Center
     )
-
     MenuArray(
         itemsTopics = listOf(
             TitleAndIconModel("All", R.drawable.all),
@@ -148,7 +145,6 @@ fun MeditateBody(navController: NavHostController) {
             TitleAndIconModel("Anxious", R.drawable.anxious),
         )
     )
-
     DailyCalm(
         Daily_Calm, painterResource(id = R.drawable.daily_calm),
         painterResource(id = R.drawable.play_button), White, Black, Black
@@ -216,9 +212,7 @@ fun MenuItem(
                         .background(if (isSelected) activeHighlightColor else inactiveTextColor)
                         .padding(10.dp)
                 ) {
-
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
                         Icon(
                             painter = painterResource(id = item.icon_id),
                             contentDescription = item.title,
