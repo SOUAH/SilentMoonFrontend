@@ -73,6 +73,10 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
     var viewModel: UserViewModel = hiltViewModel()
 
     var favTopic = viewModel.favTopic.observeAsState()
+    var notificationDays = viewModel.notificationDays.observeAsState()
+
+    val showDialog = remember { mutableStateOf(false) }
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -138,12 +142,16 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
                 }
             }
             ButtonDesign(text_color = White, bg_color = Purple, text_title = "SAVE") {
-                viewModel.updateUser(
-                    chosenTopic,
-                    daysOfWeek.filter { it.clicked.value }.map { it.name }.toTypedArray(),
-                    wheelPickerValue.value
-                )
-                buttonClicked.value = !buttonClicked.value
+                if (daysOfWeek.any { it.clicked.value }) {
+                    viewModel.updateUser(
+                        chosenTopic,
+                        daysOfWeek.filter { it.clicked.value }.map { it.name }.toTypedArray(),
+                        wheelPickerValue.value
+                    )
+                    buttonClicked.value = !buttonClicked.value
+                } else {
+                    showDialog.value = true
+                }
             }
 
             Text(
@@ -159,8 +167,21 @@ fun Reminders(navController: NavHostController, chosenTopic: String) {
             )
         }
     }
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            title = { Text(text = "Error") },
+            text = { Text(text = "Please select both the time and at least one day.") },
+            confirmButton = {
+                Button(onClick = { showDialog.value = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
     if (buttonClicked.value) {
         if (favTopic.value.toString() == chosenTopic
+            && notificationDays.value?.size!! > 0
         ) {
             navController.navigate("Meditate")
             buttonClicked.value = !buttonClicked.value

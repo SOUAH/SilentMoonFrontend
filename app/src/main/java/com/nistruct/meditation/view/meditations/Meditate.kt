@@ -205,7 +205,7 @@ fun MenuItem(
                     }
                 }
             }
-            Text(text = item.title, color = if (isSelected) activeTextColor else inactiveTextColor)
+            Text(text = item.title, color = Black)
         }
     }
 }

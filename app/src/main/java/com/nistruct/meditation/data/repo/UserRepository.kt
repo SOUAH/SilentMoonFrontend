@@ -106,7 +106,9 @@ class UserRepository @Inject constructor(
                 this.notificationDays.value = currentUser?.notificationDays
 
                 currentUser?.notificationDays?.let {
-                    notificationHelper.startScheduler(notificationTime, it)
+                    if (it.isNotEmpty()) {
+                        notificationHelper.startScheduler(notificationTime, it)
+                    }
                 }
             }
         } catch (t: Throwable) {
@@ -172,7 +174,9 @@ class UserRepository @Inject constructor(
                 this.notificationDays.value = updatedUser?.notificationDays
 
                 updatedUser?.notificationDays?.let {
-                    notificationHelper.startScheduler(notificationTime, it)
+                    if (it.isNotEmpty()) {
+                        notificationHelper.startScheduler(notificationTime, it)
+                    }
                 }
             } catch (t: Throwable) {
 
