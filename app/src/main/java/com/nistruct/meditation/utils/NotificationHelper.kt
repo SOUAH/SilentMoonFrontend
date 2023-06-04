@@ -24,11 +24,19 @@ class NotificationHelper @Inject constructor(
     lateinit var reminderTime: LocalTime
     lateinit var reminderDays: Array<String>
 
+    //setting flag so scheduler is only called once
+    private var schedulerStarted = false
+
     fun startScheduler(reminderTime: LocalTime, reminderDays: Array<String>){
+        if(schedulerStarted){
+            return
+        }
+
         this.reminderTime = reminderTime
         this.reminderDays = reminderDays
 
         setNextReminder()
+        schedulerStarted = !schedulerStarted
     }
 
     fun setNextReminder() {

@@ -20,7 +20,7 @@ import com.nistruct.meditation.ui.theme.MeditationAppTheme
 import com.nistruct.meditation.view.*
 import com.nistruct.meditation.view.laterstage.HomePage
 import com.nistruct.meditation.view.meditations.CourseDetails
-import com.nistruct.meditation.view.meditations.MeditateV2
+import com.nistruct.meditation.view.meditations.Meditate
 import com.nistruct.meditation.view.meditations.MusicV2
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -82,15 +82,15 @@ fun PageTransitions(
             Reminders(navController = navController, chosenTopic)
         }
         composable("Meditate") {
-            MeditateV2(navController = navController)
+            Meditate(navController = navController)
         }
         composable(
-            "CourseDetails/{chosenMeditation}",
-            arguments = listOf(navArgument("chosenMeditation") { type = NavType.StringType })
+            "CourseDetails/{meditationId}",
+            arguments = listOf(navArgument("meditationId") { type = NavType.StringType })
         ) {
-            val chosenMeditation = it.arguments?.getString("chosenMeditation")!!
+            val meditationId = it.arguments?.getString("meditationId")!!
 
-            CourseDetails(navController = navController)
+            CourseDetails(navController = navController, meditationId)
         }
 
         composable(

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
@@ -37,12 +39,16 @@ import kotlin.math.min
 import com.nistruct.meditation.R
 import com.nistruct.meditation.data.entity.MusicModel
 import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.viewmodel.MeditationViewModel
 
 val AppBarCollapsedHeight = 70.dp
 val AppBarExpendedHeight = 400.dp
 
 @Composable
-fun CourseDetails(navController: NavHostController) {
+fun CourseDetails(navController: NavHostController, meditationId: String) {
+    var viewModel: MeditationViewModel = hiltViewModel()
+
+    var meditations = viewModel.meditations.observeAsState()
 
     ProvideWindowInsets {
         Surface(color = White) {
@@ -55,14 +61,11 @@ fun CourseDetails(navController: NavHostController) {
 fun MainFragment(navController: NavHostController) {
     val scrollState = rememberLazyListState()
 
-
     Box {
         ToolbarDesign(scrollState, navController)
         Content(scrollState, navController)
-
     }
 }
-
 
 @Composable
 fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) {
@@ -87,9 +90,8 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
             .height(
                 AppBarExpendedHeight
             )
-            .offset { IntOffset(x = 0, y = -offset) },
-        elevation = if (offset == maxOffset) 4.dp else 0.dp
-
+//            .offset { IntOffset(x = 0, y = -offset) },
+//        elevation = if (offset == maxOffset) 4.dp else 0.dp
     ) {
         Column {
             Box(
@@ -104,7 +106,6 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -117,7 +118,6 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
                             )
                         )
                 )
-
             }
             Column(
                 Modifier
@@ -133,11 +133,9 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
                         .padding(horizontal = (16 + 50 * offsetProgress).dp)
                         .scale(1f - 0.25f * offsetProgress)
                 )
-
             }
         }
     }
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -147,7 +145,6 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
             .height(AppBarCollapsedHeight)
             .padding(horizontal = 16.dp)
     ) {
-
         CircleButton(
             painterResource = painterResource(id = R.drawable.back),
             bg_color = com.nistruct.meditation.ui.theme.White,
@@ -162,14 +159,6 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
                 tint_color = com.nistruct.meditation.ui.theme.White
             ) {
                 icon_clicked.value = !icon_clicked.value
-
-            }
-            CircleButton(
-                painterResource = painterResource(id = R.drawable.download),
-                bg_color = Black,
-                tint_color = com.nistruct.meditation.ui.theme.White
-            ) {
-
             }
         }
     }
@@ -179,10 +168,8 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
 fun Content(scrollState: LazyListState, navController: NavHostController) {
     LazyColumn(contentPadding = PaddingValues(top = AppBarExpendedHeight), state = scrollState) {
         item {
-
             CourseDetailsBody()
             Divider()
-
             Column {
                 ListenMusics(
                     itemMusic = listOf(
@@ -199,11 +186,8 @@ fun Content(scrollState: LazyListState, navController: NavHostController) {
                         MusicModel("Focus Attention", 3),
                         MusicModel("Body Scan", 5)
                     ), navController
-
                 )
             }
-
-
         }
     }
 }
@@ -220,44 +204,6 @@ fun CourseDetailsBody() {
         textAlign = TextAlign.Start,
         modifier = Modifier.padding(start = 20.dp)
     )
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp), horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = R.drawable.red_heart),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(
-                    20.dp
-                )
-            )
-            Text(
-                text = "24.243 Favorists",
-                color = Gray_level3,
-                textAlign = TextAlign.Start,
-                modifier = Modifier.padding(start = 10.dp)
-            )
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = R.drawable.head_phone),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(20.dp)
-            )
-            Text(
-                text = "34.234 Listening",
-                color = Gray_level3,
-                textAlign = TextAlign.Start,
-                modifier = Modifier.padding(start = 10.dp)
-            )
-        }
-
-    }
 }
 
 @Composable
@@ -275,18 +221,14 @@ fun ListenMusics(
             .padding(15.dp)
     ) {
         itemMusic.forEachIndexed { index, item ->
-
             MusicItem(
                 item = item,
                 isSelected = (index == selectedItemIndex), navController
             ) {
                 selectedItemIndex = index
-
                 navController.navigate("MusicV2/${item.title}")
-
             }
         }
-
     }
 }
 
@@ -338,9 +280,7 @@ fun MusicItem(
                             .padding(15.dp)
                     )
                 }
-
             }
-
             Column(modifier = Modifier.padding(horizontal = 10.dp)) {
                 Text(
                     text = item.title,
@@ -353,10 +293,7 @@ fun MusicItem(
                     color = Black.copy(alpha = 0.6f)
                 )
             }
-
-
         }
-
         Divider()
     }
 }

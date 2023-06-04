@@ -9,6 +9,7 @@ import com.nistruct.meditation.data.entity.ForgotPasswordRequest
 import com.nistruct.meditation.data.entity.LoginRequestModel
 import com.nistruct.meditation.data.entity.RegisterRequestModel
 import com.nistruct.meditation.data.entity.SetUserPreferencesRequestModel
+import com.nistruct.meditation.utils.NotificationHelper
 import timber.log.Timber
 import java.time.LocalTime
 import javax.inject.Inject
@@ -17,7 +18,8 @@ import javax.inject.Singleton
 @Singleton
 class UserRepository @Inject constructor(
     val apiInteractor: ApiInteractor,
-    val dataStore: DataStoreInterface
+    val dataStore: DataStoreInterface,
+    val notificationHelper: NotificationHelper // Injecting notification helper
 ) {
 
     var accessToken = MutableLiveData<String>()
@@ -103,6 +105,10 @@ class UserRepository @Inject constructor(
                 this.favTopic.value = currentUser?.favoriteTopic
                 this.notificationTime.value = notificationTime
                 this.notificationDays.value = currentUser?.notificationDays
+
+                currentUser?.notificationDays?.let {
+                    notificationHelper.startScheduler(notificationTime, it)
+                }
             }
         } catch (t: Throwable) {
             Timber.i("TAG: ${t.message}")
@@ -162,6 +168,10 @@ class UserRepository @Inject constructor(
                 this.favTopic.value = updatedUser?.favoriteTopic
                 this.notificationTime.value = notificationTime
                 this.notificationDays.value = updatedUser?.notificationDays
+
+                updatedUser?.notificationDays?.let {
+                    notificationHelper.startScheduler(notificationTime, it)
+                }
             } catch (t: Throwable) {
 
                 Timber.i("TAG: ${t.message}")

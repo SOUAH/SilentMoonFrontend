@@ -31,7 +31,6 @@ import com.nistruct.meditation.DesignContent.TitleDetail
 import com.nistruct.meditation.R
 import com.nistruct.meditation.ui.theme.*
 import com.nistruct.meditation.viewmodel.SongViewModel
-import com.nistruct.meditation.viewmodel.UserViewModel
 
 @Composable
 fun MusicV2(navController: NavHostController, musicName: String) {
@@ -103,7 +102,6 @@ fun MusicV2(navController: NavHostController, musicName: String) {
             MusicIcons(ic_play, isPlaying,sliderValue,audio_lenght,second15)
 
             SliderDesign(sliderValue,audio_lenght)
-
         }
 
         if (!isPlaying.value) {
@@ -187,8 +185,6 @@ fun SliderDesign(sliderValue: MutableState<Float>, audio_lenght: Float) {
     val audio_start_seconds = ((audio_start_millis / 1000) % 60).toInt()
     val audio_start = "$audio_start_minutes:$audio_start_seconds"
 
-
-
     Slider(value = sliderValue.value, onValueChange = {
         sliderValue.value = it
 
@@ -201,13 +197,11 @@ fun SliderDesign(sliderValue: MutableState<Float>, audio_lenght: Float) {
             activeTrackColor = Black,
             inactiveTrackColor = Gray_level3
         ))
-
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(text = audio_start)
         Text(text = audio_lenght)
-
     }
 }
 

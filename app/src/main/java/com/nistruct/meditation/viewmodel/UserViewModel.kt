@@ -16,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel // enable injection of a ViewModel
 class UserViewModel @Inject constructor(
-    var userRepository: UserRepository,
-    private val notificationHelper: NotificationHelper // Injecting notification helper
+    var userRepository: UserRepository
 ) : ViewModel() {//dependencies injected
 
     var email = MutableLiveData<String>()
@@ -27,13 +26,6 @@ class UserViewModel @Inject constructor(
     var favTopic = MutableLiveData<String>()
     var notificationTime = MutableLiveData<LocalTime>()
     var notificationDays = MutableLiveData<Array<String>>()
-
-    //setting function that will be called when change is observed
-    private val timeObserver = Observer<LocalTime> { checkAndScheduleNotifications() }
-    private val daysObserver = Observer<Array<String>> { checkAndScheduleNotifications() }
-
-    //setting flag so scheduler is only called once
-    private var schedulerStarted = false
     init {
         email = userRepository.returnEmail()
         username = userRepository.returnUsername()
@@ -42,11 +34,6 @@ class UserViewModel @Inject constructor(
         favTopic = userRepository.returnFavTopic()
         notificationTime = userRepository.returnNotificationTime()
         notificationDays = userRepository.returnNotificationDays()
-
-        //observing for changes in notificationTime and notificationDays;
-        //initially both are empty, when I get data from db they get populated
-        notificationTime.observeForever(timeObserver)
-        notificationDays.observeForever(daysObserver)
     }
 
 
@@ -76,22 +63,5 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.updateUser(favoriteTopic, notificationDays, notificationTime)
         }
-    }
-
-    private fun checkAndScheduleNotifications() {
-        val time = notificationTime.value
-        val days = notificationDays.value
-
-        if (time != null && days != null && !schedulerStarted) {
-            notificationHelper.startScheduler(time, days)
-            schedulerStarted = !schedulerStarted
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        // Don't forget to remove observers when the ViewModel is destroyed
-        notificationTime.removeObserver(timeObserver)
-        notificationDays.removeObserver(daysObserver)
     }
 }

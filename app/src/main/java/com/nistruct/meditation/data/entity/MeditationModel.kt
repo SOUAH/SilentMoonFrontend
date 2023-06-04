@@ -1,18 +1,19 @@
 package com.nistruct.meditation.data.entity
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 
 data class MeditationModel(
-    @SerialName("id")
+    @SerializedName("_id")
     val id: String,
-    @SerialName("meditationName")
+    @SerializedName("meditationName")
     val meditationName: String,
-    @SerialName("topicName")
+    @SerializedName("topicName")
     val topicName: String,
-    @SerialName("imageUrl")
+    @SerializedName("imageUrl")
     val imageUrl: String,
-    @SerialName("description")
+    @SerializedName("description")
     val description: String,
-    @SerialName("playlist")
+    @SerializedName("playlist")
     val playlist: Array<SongModel>
 )

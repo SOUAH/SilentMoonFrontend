@@ -44,12 +44,11 @@ import com.nistruct.meditation.viewmodel.MeditationViewModel
 
 
 @Composable
-fun MeditateV2(navController: NavHostController) {
+fun Meditate(navController: NavHostController) {
     var viewModel: MeditationViewModel = hiltViewModel()
 //    var nickNameDS = viewModel.getNickName()
     var selectedItemIndex = remember { mutableStateOf(0) }
     var meditations = viewModel.meditations.observeAsState()
-
 
     Scaffold(
         bottomBar = {

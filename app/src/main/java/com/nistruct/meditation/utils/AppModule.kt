@@ -35,9 +35,10 @@ object AppModule {
     @Provides
     fun provideSignUpRepository(
         apiInteracor: ApiInteractor,
-        dataStore: DataStoreInterface
+        dataStore: DataStoreInterface,
+        notificationHelper: NotificationHelper
     ): UserRepository {
-        return UserRepository(apiInteracor, dataStore)
+        return UserRepository(apiInteracor, dataStore, notificationHelper)
     }
 
     @Singleton
