@@ -31,4 +31,7 @@ interface DataStoreInterface {
     suspend fun putTopicList(topicList: Array<TopicModel>)
 
     suspend fun putMeditationList(meditationList: Array<MeditationModel>)
+
+    suspend fun deleteUserResponse()
+
 }

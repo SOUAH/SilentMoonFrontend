@@ -43,6 +43,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.nistruct.meditation.data.entity.TitleAndIconModel
 import com.nistruct.meditation.ui.theme.Black
 import com.nistruct.meditation.ui.theme.Gray
@@ -337,6 +338,7 @@ fun BottomMenu(
     activeHighlightColor: Color = Purple,
     activeTextColor: Color = Color.White,
     inactiveTextColor: Color = Gray,
+    navController: NavHostController
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
@@ -355,6 +357,7 @@ fun BottomMenu(
                 inactiveTextColor = inactiveTextColor
             ) {
                 selectedItemIndex.value = index
+                navController.navigate(item.title)
             }
         }
     }

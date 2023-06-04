@@ -52,6 +52,24 @@ class DataStoreRepository @Inject constructor(private val context: Context) : Da
         }
     }
 
+    override suspend fun deleteUserResponse() {
+        val keysToDelete = listOf(
+            stringPreferencesKey(USER_ID),
+            stringPreferencesKey(USER_NAME),
+            stringPreferencesKey(USER_EMAIL),
+            stringPreferencesKey(USER_NOTIFICATION_TIME),
+            stringPreferencesKey(USER_FAVORITE_TOPIC),
+            stringPreferencesKey(USER_NOTIFICATION_DAYS)
+        )
+
+        context.dataStore.edit { preferences ->
+            keysToDelete.forEach { key ->
+                preferences.remove(key)
+            }
+        }
+    }
+
+
     override suspend fun putUserResponse(userResponse: UserResponse) {
         context.dataStore.edit { preferences ->
             preferences[stringPreferencesKey(USER_ID)] = userResponse.id
@@ -132,4 +150,6 @@ class DataStoreRepository @Inject constructor(private val context: Context) : Da
             preferences[preferencesKey] = Json.encodeToString(meditaionList)
         }
     }
+
+
 }

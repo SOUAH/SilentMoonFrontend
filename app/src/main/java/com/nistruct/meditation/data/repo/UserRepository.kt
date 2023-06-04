@@ -180,4 +180,13 @@ class UserRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun logout() {
+        try {
+            dataStore.deleteUserResponse()
+            dataStore.deleteAccessToken()
+        } catch (t: Throwable) {
+            Timber.i("TAG: ${t.message}")
+        }
+    }
 }

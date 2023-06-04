@@ -19,12 +19,15 @@ import androidx.navigation.NavController
 import com.nistruct.meditation.DesignContent.ButtonDesign
 import com.nistruct.meditation.DesignContent.MainTitle
 import com.nistruct.meditation.DesignContent.TitleDetail
-import  com.nistruct.meditation.R
-import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.R
+import com.nistruct.meditation.ui.theme.Black
+import com.nistruct.meditation.ui.theme.Gray
+import com.nistruct.meditation.ui.theme.Purple
+import com.nistruct.meditation.ui.theme.White
 
 
 @Composable
-fun SignUpAndSignIn(navController: NavController) {
+fun LaunchScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             Box() {
@@ -51,17 +54,21 @@ fun SignUpAndSignIn(navController: NavController) {
             }
 
             MainTitle("We are what we do", Black, TextAlign.Center)
-            TitleDetail("Thousand of people are using silent moon \n for smalls meditation",
+            TitleDetail(
+                "Thousand of people are using silent moon \n for smalls meditation",
                 Gray,
-                TextAlign.Center)
+                TextAlign.Center
+            )
 
             ButtonDesign(White, Purple, "SIGN UP") {
                 navController.navigate("signUp")
             }
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = "ALREADY HAVE AN ACCOUNT?",
-                    fontSize = 14.sp, color = Gray)
+                Text(
+                    text = "ALREADY HAVE AN ACCOUNT?",
+                    fontSize = 14.sp, color = Gray
+                )
                 LogInButton("LOG IN") {
                     navController.navigate("SignIn")
                 }
@@ -82,7 +89,6 @@ fun LogInButton(title: String, onItemClick: () -> Unit) {
             .clickable {
                 onItemClick()
             }
-
     )
 }
 

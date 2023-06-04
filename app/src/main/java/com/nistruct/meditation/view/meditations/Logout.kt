@@ -10,14 +10,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nistruct.meditation.DesignContent.*
 import com.nistruct.meditation.R
 import com.nistruct.meditation.ui.theme.*
+import com.nistruct.meditation.viewmodel.UserViewModel
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Logout(navController: NavController) {
+    var viewModel = hiltViewModel<UserViewModel>()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column() {
@@ -51,6 +54,7 @@ fun Logout(navController: NavController) {
                         bg_color = Purple,
                         text_title = "LOG OUT"
                     ) {
+                        viewModel.logout()
                         navController.navigate("LaunchScreen")
                     }
                 }
