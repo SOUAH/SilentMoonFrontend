@@ -2,12 +2,15 @@ package com.nistruct.meditation.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -17,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavHostController
 import com.nistruct.meditation.DesignContent.ButtonDesign
 import com.nistruct.meditation.R
@@ -31,7 +33,6 @@ import com.nistruct.meditation.viewmodel.UserViewModel
 fun WelcomeScreen(navController: NavHostController, getNickname: String) {
 
     var viewModel = hiltViewModel<UserViewModel>()
-
     var favTopic = viewModel.favTopic.observeAsState()
 
     Box(
@@ -62,17 +63,14 @@ fun WelcomeScreen(navController: NavHostController, getNickname: String) {
                 bg_color = White,
                 text_title = "GET STARTED"
             ) {
-
                 if (!favTopic.value.isNullOrEmpty()) {
                     navController.navigate("Meditate")
-                }
-                else{
+                } else {
                     navController.navigate("ChooseTopic")
                 }
             }
         }
     }
-
 }
 
 @Composable
@@ -91,7 +89,6 @@ fun TextWelcomeTitle(getNickname: String) {
             lineHeight = 41.sp,
             textAlign = TextAlign.Center
         )
-
         Text(
             text = "Explore the app, Find some peace of mind to prepare for meditation.",
             fontSize = 16.sp,

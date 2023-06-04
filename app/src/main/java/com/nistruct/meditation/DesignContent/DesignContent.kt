@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -26,6 +29,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nistruct.meditation.data.entity.TitleAndIconModel
 import com.nistruct.meditation.ui.theme.*
 
 
@@ -118,7 +122,6 @@ fun CircleButton(
         }
     }
 }
-
 
 @Composable
 fun TextFieldDesign(
@@ -249,10 +252,6 @@ fun DailyCalm(
                     color = title_color,
                     fontWeight = FontWeight.Bold
                 )
-//                Text(
-//                    text = "APR 30  PAUSE PRACTICE",
-//                    color = title_color.copy(alpha = 0.6f)
-//                )
             }
             Card(
                 modifier = Modifier.size(60.dp),
@@ -308,6 +307,84 @@ fun PlayIconsDesign(
                     .padding(15.dp)
             )
         }
+    }
+}
+
+@Composable
+fun BottomMenu(
+    selectedItemIndex: MutableState<Int>,
+    items: List<TitleAndIconModel>,
+    activeHighlightColor: Color = Purple,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = Gray,
+) {
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(15.dp)
+    ) {
+
+        items.forEachIndexed { index, item ->
+            BottomMenuItem(
+                item = item,
+                isSelected = (index == selectedItemIndex.value),
+                activeHighlightColor = activeHighlightColor,
+                activeTextColor = activeTextColor,
+                inactiveTextColor = inactiveTextColor
+            ) {
+                selectedItemIndex.value = index
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomMenuItem(
+    item: TitleAndIconModel,
+    isSelected: Boolean = false,
+    activeHighlightColor: Color = Purple,
+    activeTextColor: Color = Purple,
+    inactiveTextColor: Color = Gray,
+    onItemClick: () -> Unit
+) {
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+
+                        onItemClick()
+                    }
+                )
+            }
+    ) {
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (isSelected) activeHighlightColor else Color.Transparent)
+                .padding(10.dp)
+        ) {
+
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Icon(
+                    painter = painterResource(id = item.icon_id), contentDescription = item.title,
+                    tint = if (isSelected) activeTextColor else inactiveTextColor,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        Text(text = item.title, color = if (isSelected) Purple else Gray)
 
     }
 }

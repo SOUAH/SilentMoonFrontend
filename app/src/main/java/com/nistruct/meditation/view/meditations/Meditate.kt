@@ -1,19 +1,31 @@
 package com.nistruct.meditation.view.meditations
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,13 +44,17 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.nistruct.meditation.DesignContent.BigTitleDesign
+import com.nistruct.meditation.DesignContent.BottomMenu
 import com.nistruct.meditation.DesignContent.DailyCalm
 import com.nistruct.meditation.DesignContent.TitleDetail
 import com.nistruct.meditation.R
 import com.nistruct.meditation.data.entity.MeditationModel
 import com.nistruct.meditation.data.entity.TitleAndIconModel
-import com.nistruct.meditation.ui.theme.*
-import com.nistruct.meditation.view.BottomMenu
+import com.nistruct.meditation.ui.theme.Black
+import com.nistruct.meditation.ui.theme.Daily_Calm
+import com.nistruct.meditation.ui.theme.Gray_level3
+import com.nistruct.meditation.ui.theme.Purple
+import com.nistruct.meditation.ui.theme.White
 import com.nistruct.meditation.view.Header
 import com.nistruct.meditation.viewmodel.MeditationViewModel
 
@@ -88,25 +104,6 @@ fun Meditate(navController: NavHostController) {
         }
     }
 }
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun Meditations(meditations: Array<MeditationModel>, navController: NavHostController) {
-
-//    Column(modifier = Modifier.fillMaxWidth()) {
-    LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Fixed(2), modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(meditations.size) { item ->
-            MeditationItem(meditation = meditations[item], navController)
-        }
-    }
-
-//    }
-}
-
 
 @Composable
 fun MeditationItem(meditation: MeditationModel, navController: NavHostController) {
@@ -187,11 +184,7 @@ fun MenuArray(
                 selectedItemIndex = it
             }
         })
-
-
     }
-
-
 }
 
 @Composable

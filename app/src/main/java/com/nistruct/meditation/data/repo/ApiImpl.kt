@@ -1,6 +1,14 @@
 package com.nistruct.meditation.data.repo
 
-import com.nistruct.meditation.data.entity.*
+import com.nistruct.meditation.data.entity.ForgotPasswordRequest
+import com.nistruct.meditation.data.entity.LoginRequestModel
+import com.nistruct.meditation.data.entity.LoginResponse
+import com.nistruct.meditation.data.entity.MeditationListModel
+import com.nistruct.meditation.data.entity.RegisterRequestModel
+import com.nistruct.meditation.data.entity.RegisterResponse
+import com.nistruct.meditation.data.entity.SetUserPreferencesRequestModel
+import com.nistruct.meditation.data.entity.TopicListModel
+import com.nistruct.meditation.data.entity.UserResponse
 import com.nistruct.meditation.retrofit.MeditationAPI
 import retrofit2.HttpException
 import timber.log.Timber
@@ -28,7 +36,7 @@ class ApiImpl
         } else throw HttpException(registerResponse)
     }
 
-    //implementation of interfacze
+    //implementation of interface
     override suspend fun forgotPassword(request: ForgotPasswordRequest) {
         meditationAPI.forgotPassword(request)
         Timber.tag("API_TEST_FORGOT_PASSWORD").i("Forgot password request is sent")
@@ -58,7 +66,11 @@ class ApiImpl
         } else throw HttpException(meditationListResponse)
     }
 
-    override suspend fun updateUser(authHeader: String,userId: String, request: SetUserPreferencesRequestModel): UserResponse? {
+    override suspend fun updateUser(
+        authHeader: String,
+        userId: String,
+        request: SetUserPreferencesRequestModel
+    ): UserResponse? {
         val updateResponse = meditationAPI.updateUser("Bearer " + authHeader, userId, request)
         Timber.tag("API_TEST_LOG_IN").i(updateResponse.code().toString())
         return if (updateResponse.isSuccessful) {

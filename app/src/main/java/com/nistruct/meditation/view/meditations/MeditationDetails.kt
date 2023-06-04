@@ -10,13 +10,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.graphicsLayer
@@ -37,6 +35,7 @@ import com.nistruct.meditation.DesignContent.CircleButton
 import kotlin.math.max
 import kotlin.math.min
 import com.nistruct.meditation.R
+import com.nistruct.meditation.data.entity.MeditationModel
 import com.nistruct.meditation.data.entity.MusicModel
 import com.nistruct.meditation.ui.theme.*
 import com.nistruct.meditation.viewmodel.MeditationViewModel
@@ -48,27 +47,27 @@ val AppBarExpendedHeight = 400.dp
 fun CourseDetails(navController: NavHostController, meditationId: String) {
     var viewModel: MeditationViewModel = hiltViewModel()
 
-    var meditations = viewModel.meditations.observeAsState()
+    var meditation: MeditationModel = viewModel.getMeditationById(meditationId)
 
     ProvideWindowInsets {
         Surface(color = White) {
-            MainFragment(navController)
+            MainFragment(navController, meditation)
         }
     }
 }
 
 @Composable
-fun MainFragment(navController: NavHostController) {
+fun MainFragment(navController: NavHostController, meditation: MeditationModel) {
     val scrollState = rememberLazyListState()
 
     Box {
-        ToolbarDesign(scrollState, navController)
-        Content(scrollState, navController)
+        ToolbarDesign(scrollState, navController, meditation)
+        Content(scrollState, navController, meditation)
     }
 }
 
 @Composable
-fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) {
+fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController, meditation: MeditationModel) {
     val imageHeight = AppBarExpendedHeight - AppBarCollapsedHeight
 
     val maxOffset =
@@ -90,8 +89,8 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
             .height(
                 AppBarExpendedHeight
             )
-//            .offset { IntOffset(x = 0, y = -offset) },
-//        elevation = if (offset == maxOffset) 4.dp else 0.dp
+            .offset { IntOffset(x = 0, y = -offset) },
+        elevation = if (offset == maxOffset) 4.dp else 0.dp
     ) {
         Column {
             Box(
@@ -126,7 +125,7 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "Happy Morning",
+                    meditation.meditationName,
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -165,10 +164,10 @@ fun ToolbarDesign(scrollState: LazyListState, navController: NavHostController) 
 }
 
 @Composable
-fun Content(scrollState: LazyListState, navController: NavHostController) {
+fun Content(scrollState: LazyListState, navController: NavHostController, meditation: MeditationModel) {
     LazyColumn(contentPadding = PaddingValues(top = AppBarExpendedHeight), state = scrollState) {
         item {
-            CourseDetailsBody()
+            CourseDetailsBody(meditation)
             Divider()
             Column {
                 ListenMusics(
@@ -193,13 +192,13 @@ fun Content(scrollState: LazyListState, navController: NavHostController) {
 }
 
 @Composable
-fun CourseDetailsBody() {
+fun CourseDetailsBody(meditation: MeditationModel) {
     Text(
-        text = "COURSE", color = Gray_level3, textAlign = TextAlign.Start,
+        text = meditation.meditationName, color = Gray_level3, textAlign = TextAlign.Start,
         modifier = Modifier.padding(20.dp)
     )
     Text(
-        text = "Ease the mind into a restful night’s sleep  with \n" + "these deep, ambient tones.",
+        text = meditation.description,
         color = Gray_level3,
         textAlign = TextAlign.Start,
         modifier = Modifier.padding(start = 20.dp)
@@ -226,7 +225,7 @@ fun ListenMusics(
                 isSelected = (index == selectedItemIndex), navController
             ) {
                 selectedItemIndex = index
-                navController.navigate("MusicV2/${item.title}")
+                navController.navigate("Music/${item.title}")
             }
         }
     }

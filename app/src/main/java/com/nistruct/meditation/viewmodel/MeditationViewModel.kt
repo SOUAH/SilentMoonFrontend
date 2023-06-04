@@ -17,7 +17,6 @@ class MeditationViewModel @Inject constructor(
 ) : ViewModel() {//dependencies injected
 
     var meditations = MutableLiveData<Array<MeditationModel>>()
-
     init {
         meditations = meditationRepository.returnMeditationList()
         viewModelScope.launch {
@@ -25,6 +24,10 @@ class MeditationViewModel @Inject constructor(
         }
     }
 
+    fun getMeditationById(meditationId: String): MeditationModel {
+        return meditations.value?.firstOrNull { it.id == meditationId }
+            ?: throw IllegalArgumentException("No Meditation with ID $meditationId found.")
 
+    }
 
 }
