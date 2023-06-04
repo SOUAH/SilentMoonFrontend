@@ -15,9 +15,6 @@ class TopicRepository @Inject constructor(
 ) {
 
     var topicList = MutableLiveData<Array<TopicModel>>()
-//    init {
-//        email = MutableLiveData<String>("")
-//    }
 
     fun returntopicList(): MutableLiveData<Array<TopicModel>> {
         return topicList

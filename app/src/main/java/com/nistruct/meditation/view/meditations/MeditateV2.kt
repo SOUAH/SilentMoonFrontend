@@ -5,18 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -101,14 +96,14 @@ fun MeditateV2(navController: NavHostController) {
 fun Meditations(meditations: Array<MeditationModel>, navController: NavHostController) {
 
 //    Column(modifier = Modifier.fillMaxWidth()) {
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2), modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            items(meditations.size) { item ->
-                MeditationItem(meditation = meditations[item], navController)
-            }
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2), modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(meditations.size) { item ->
+            MeditationItem(meditation = meditations[item], navController)
         }
+    }
 
 //    }
 }
@@ -131,7 +126,7 @@ fun MeditationItem(meditation: MeditationModel, navController: NavHostController
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    navController.navigate("CourseDetails/${meditation.meditationName}")
+                    navController.navigate("CourseDetails/${meditation.id}")
                 },
             contentScale = ContentScale.FillBounds,
         )

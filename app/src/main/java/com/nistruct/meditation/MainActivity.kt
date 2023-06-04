@@ -11,7 +11,6 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,11 +19,9 @@ import androidx.navigation.navArgument
 import com.nistruct.meditation.ui.theme.MeditationAppTheme
 import com.nistruct.meditation.view.*
 import com.nistruct.meditation.view.laterstage.HomePage
-import com.nistruct.meditation.view.laterstage.WelcomeSleep
 import com.nistruct.meditation.view.meditations.CourseDetails
 import com.nistruct.meditation.view.meditations.MeditateV2
 import com.nistruct.meditation.view.meditations.MusicV2
-import com.nistruct.meditation.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -87,8 +84,10 @@ fun PageTransitions(
         composable("Meditate") {
             MeditateV2(navController = navController)
         }
-        composable("CourseDetails/{chosenMeditation}",
-            arguments = listOf(navArgument("chosenMeditation") { type = NavType.StringType })) {
+        composable(
+            "CourseDetails/{chosenMeditation}",
+            arguments = listOf(navArgument("chosenMeditation") { type = NavType.StringType })
+        ) {
             val chosenMeditation = it.arguments?.getString("chosenMeditation")!!
 
             CourseDetails(navController = navController)
@@ -108,12 +107,10 @@ fun PageTransitions(
         composable("MainViewLaterStage") {
             MainViewLaterStage(navController = navController)
         }
-        composable("WelcomeSleep") {
-            WelcomeSleep(navController = navController)
-        }
-//        composable("Music") {
+
+        composable("Music") {
 //            Music(navController = navController)
-//        }
+        }
 
 
     }

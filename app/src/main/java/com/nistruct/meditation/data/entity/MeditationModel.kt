@@ -3,6 +3,8 @@ package com.nistruct.meditation.data.entity
 import kotlinx.serialization.SerialName
 
 data class MeditationModel(
+    @SerialName("id")
+    val id: String,
     @SerialName("meditationName")
     val meditationName: String,
     @SerialName("topicName")
