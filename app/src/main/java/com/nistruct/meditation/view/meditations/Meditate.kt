@@ -117,7 +117,7 @@ fun MeditateBody(navController: NavHostController) {
     BigTitleDesign("Meditate", MaterialTheme.typography.h4, FontWeight.Bold)
     TitleDetail(
         text = "we can learn how to recognize when our minds are doing their normal everyday acrobatics.",
-        color = Black,
+        color = Gray,
         align = TextAlign.Center
     )
     MenuArray(
@@ -126,6 +126,8 @@ fun MeditateBody(navController: NavHostController) {
             TitleAndIconModel("My", R.drawable.my),
             TitleAndIconModel("Kids", R.drawable.kids),
             TitleAndIconModel("Anxious", R.drawable.anxious),
+            TitleAndIconModel("All", R.drawable.all),
+            TitleAndIconModel("My", R.drawable.my),
         )
     )
     DailyCalm(

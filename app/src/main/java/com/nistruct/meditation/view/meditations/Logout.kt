@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -43,19 +44,28 @@ fun Logout(navController: NavController) {
                         navController.popBackStack()
                     }
 
-                    MainTitle(
-                        title = "Come Back!",
-                        color = Black,
-                        align = TextAlign.Center
-                    )
-
-                    ButtonDesign(
-                        text_color = White,
-                        bg_color = Purple,
-                        text_title = "LOG OUT"
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        viewModel.logout()
-                        navController.navigate("LaunchScreen")
+                        MainTitle(
+                            title = "Come Back!",
+                            color = Black,
+                            align = TextAlign.Center
+                        )
+
+                        ButtonDesign(
+                            text_color = White,
+                            bg_color = Purple,
+                            text_title = "LOG OUT"
+                        )
+                        {
+                            viewModel.logout()
+                            navController.navigate("LaunchScreen")
+                        }
                     }
                 }
             }
