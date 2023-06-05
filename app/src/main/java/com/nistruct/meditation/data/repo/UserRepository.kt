@@ -186,6 +186,13 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun logout() {
+        email = MutableLiveData<String>("")
+        userName = MutableLiveData<String>("")
+        accessToken = MutableLiveData<String>("")
+
+        favTopic = MutableLiveData<String>("")
+        notificationTime = MutableLiveData<LocalTime>(null)
+        notificationDays = MutableLiveData<Array<String>>(null)
         try {
             dataStore.deleteUserResponse()
             dataStore.deleteAccessToken()

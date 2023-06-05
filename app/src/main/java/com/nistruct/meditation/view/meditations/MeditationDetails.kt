@@ -5,35 +5,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,10 +37,11 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.nistruct.meditation.DesignContent.CircleButton
 import com.nistruct.meditation.R
 import com.nistruct.meditation.data.entity.MeditationModel
-import com.nistruct.meditation.data.entity.MusicModel
+import com.nistruct.meditation.data.entity.SongModel
 import com.nistruct.meditation.ui.theme.Black
 import com.nistruct.meditation.ui.theme.Gray_level3
 import com.nistruct.meditation.viewmodel.MeditationViewModel
+import java.net.URLEncoder
 import kotlin.math.max
 import kotlin.math.min
 
@@ -213,21 +193,9 @@ fun Content(
                 )
                 Divider()
                 Column {
-                    ListenMusics(
-                        itemMusic = listOf(
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Body Scan", 5),
-                            MusicModel("Making Happiness", 3),
-                            MusicModel("Body Scan", 5),
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Focus Attention", 3),
-                            MusicModel("Body Scan", 5)
-                        ), navController
+                    SongList(
+
+                     meditation.playlist, navController
                     )
                 }
             }
@@ -236,12 +204,10 @@ fun Content(
 }
 
 @Composable
-fun ListenMusics(
-    itemMusic: List<MusicModel>,
+fun SongList(
+    musicList: Array<SongModel>,
     navController: NavHostController,
-    initialSelectedItemIndex: Int = 0
 ) {
-    var selectedItemIndex by remember { mutableStateOf(initialSelectedItemIndex) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -249,11 +215,13 @@ fun ListenMusics(
             .fillMaxWidth()
             .padding(15.dp)
     ) {
-        itemMusic.forEachIndexed { index, item ->
+        musicList.forEachIndexed { index, item ->
             MusicItem(
                 item = item,
             ) {
-                navController.navigate("Music/${item.title}")
+                val encodedSongUrl = URLEncoder.encode(item.songUrl, "UTF-8")
+                navController.navigate("Music/${item.songName}/${item.songUrl}")
+
             }
         }
     }
@@ -261,7 +229,7 @@ fun ListenMusics(
 
 @Composable
 fun MusicItem(
-    item: MusicModel,
+    item: SongModel,
     onItemClick: () -> Unit
 ) {
     Column(
@@ -305,14 +273,10 @@ fun MusicItem(
             }
             Column(modifier = Modifier.padding(horizontal = 10.dp)) {
                 Text(
-                    text = item.title,
+                    text = item.songName,
                     style = MaterialTheme.typography.h5,
                     color = Black,
                     fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "${item.time} MIN",
-                    color = Black.copy(alpha = 0.6f)
                 )
             }
         }

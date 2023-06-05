@@ -21,6 +21,7 @@ import com.nistruct.meditation.view.meditations.CourseDetails
 import com.nistruct.meditation.view.meditations.Meditate
 import com.nistruct.meditation.view.meditations.Music
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.URLDecoder
 
 
 @AndroidEntryPoint
@@ -88,11 +89,15 @@ fun PageTransitions(
             CourseDetails(navController = navController, meditationId)
         }
         composable(
-            "Music/{musicName}",
-            arguments = listOf(navArgument("musicName") { type = NavType.StringType })
+            "Music/{songName}/{songUrl}",
+            arguments = listOf(
+                navArgument("songName") { type = NavType.StringType },
+                navArgument("songUrl") { type = NavType.StringType })
         ) {
-            val musicName = it.arguments?.getString("musicName")!!
-            Music(navController, musicName)
+            val songName = it.arguments?.getString("songName")!!
+            val encodedSongUrl = it.arguments?.getString("songUrl")!!
+            val songUrl = URLDecoder.decode(encodedSongUrl, "UTF-8")
+            Music(navController, songName, songUrl)
         }
         composable("Account") {
             Logout(navController)

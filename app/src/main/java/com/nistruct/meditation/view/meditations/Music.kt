@@ -38,10 +38,10 @@ import com.nistruct.meditation.ui.theme.Clear_Yellow
 import com.nistruct.meditation.ui.theme.Gray_level3
 import com.nistruct.meditation.ui.theme.White
 import com.nistruct.meditation.viewmodel.SongViewModel
+import retrofit2.http.Url
 
 @Composable
-fun Music(navController: NavHostController, musicName: String) {
-    val sliderValue = remember { mutableStateOf(0f) }
+fun Music(navController: NavHostController, songName: String, songUrl: String ) {
 
     val viewModel = hiltViewModel<SongViewModel>()
 
@@ -49,7 +49,7 @@ fun Music(navController: NavHostController, musicName: String) {
     val totalDuration by viewModel.totalDuration.observeAsState(initial = 0)
 
     LaunchedEffect(key1 = viewModel) {
-        viewModel.playAudioFromUrl("https://7e6f-87-116-160-36.ngrok-free.app" + "/song.mp3")
+        viewModel.playAudioFromUrl(songUrl)
     }
 
     val icPlayClicked = remember { mutableStateOf(true) }
@@ -82,8 +82,8 @@ fun Music(navController: NavHostController, musicName: String) {
             }
         }
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-            MainTitle(title = musicName, color = Black, align = TextAlign.Center)
-            TitleDetail(text = "7 DAYS OF CALM", color = Gray_level3, align = TextAlign.Center)
+            MainTitle(title = songName, color = Black, align = TextAlign.Center)
+//            TitleDetail(text = "7 DAYS OF CALM", color = Gray_level3, align = TextAlign.Center)
             MusicIcons(icPlay, icPlayClicked, viewModel)
             SliderDesign(
                 sliderValue = currentProgress.toFloat(),
